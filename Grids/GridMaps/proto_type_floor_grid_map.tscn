@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgv8rdhc1pmqb"]
+
+[ext_resource type="MeshLibrary" uid="uid://ce7rdwvxygo4y" path="res://Grids/MeshLibrary/prototypeFloor.tres" id="1_nbwfc"]
+
+[node name="ProtoTypeFloorGridMap" type="GridMap"]
+mesh_library = ExtResource("1_nbwfc")
+cell_size = Vector3(4, 1, 4)
