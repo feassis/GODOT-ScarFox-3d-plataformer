@@ -4,6 +4,8 @@ extends CharacterBody3D
 @export var normalSpeed: float = 5.0
 @export var sprintSpeed: float = 9.0
 @export var JUMP_VELOCITY: float = 4.5
+@export var deaceleration: float = 5.0
+@export var onAirDamping: float = 0.3
 
 var _currentSpeed: float = normalSpeed
 
@@ -31,13 +33,16 @@ func _physics_process(delta):
 	
 	direction = direction.rotated(Vector3.UP, springArmOffset.rotation.y)
 	
+	if not is_on_floor():
+		_currentSpeed *= onAirDamping
+	
 	if direction:
 		velocity.x = direction.x * _currentSpeed
 		velocity.z = direction.z * _currentSpeed
 		body.apply_rotation(velocity.normalized())
 	else:
-		velocity.x = move_toward(velocity.x, 0, _currentSpeed)
-		velocity.z = move_toward(velocity.z, 0, _currentSpeed)
+		velocity.x = move_toward(velocity.x, 0, deaceleration * delta)
+		velocity.z = move_toward(velocity.z, 0, deaceleration * delta)
 
 	move_and_slide()
 	body.animate(velocity)
