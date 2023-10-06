@@ -19,6 +19,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var body: Body = null
 @export var springArmOffset: Node3D = null
 
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
 	# Add the gravity.
