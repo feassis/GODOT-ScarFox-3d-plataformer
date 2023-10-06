@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh2xcqq1yfr2c"]
+
+[ext_resource type="ArrayMesh" uid="uid://biyihk1vigvie" path="res://addons/kaykit_prototype_bits/Assets/obj/Box_A.obj" id="1_ijhrc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5rjo6"]
+size = Vector3(0.535648, 0.402891, 0.50671)
+
+[node name="BoxA" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0610267, 0, 0.409446)
+mesh = ExtResource("1_ijhrc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00174236, 0.205612, 0.000577927)
+shape = SubResource("BoxShape3D_5rjo6")
