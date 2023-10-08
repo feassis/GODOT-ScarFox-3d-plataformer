@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqrtiiyln7mx2"]
+
+[ext_resource type="Script" path="res://Plataform Obstacles/DeathPlane.gd" id="1_c6r45"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xru63"]
+size = Vector3(150, 10, 150)
+
+[node name="DeathPlane" type="Area3D" node_paths=PackedStringArray("collisionShape")]
+collision_layer = 3
+script = ExtResource("1_c6r45")
+collisionShape = NodePath("CollisionShape3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_xru63")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
