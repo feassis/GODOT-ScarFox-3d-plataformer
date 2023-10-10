@@ -5,10 +5,9 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_xru63"]
 size = Vector3(150, 10, 150)
 
-[node name="DeathPlane" type="Area3D" node_paths=PackedStringArray("collisionShape")]
+[node name="DeathPlane" type="Area3D"]
 collision_layer = 3
 script = ExtResource("1_c6r45")
-collisionShape = NodePath("CollisionShape3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_xru63")
