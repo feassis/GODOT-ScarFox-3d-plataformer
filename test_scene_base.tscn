@@ -36,8 +36,8 @@ data = {
 
 [node name="Player" parent="." instance=ExtResource("2_36j0l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04917, 0)
-JUMP_VELOCITY = 13.5
 onAirDamping = 1.6
+JUMP_VELOCITY = 13.5
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_45nc5")
