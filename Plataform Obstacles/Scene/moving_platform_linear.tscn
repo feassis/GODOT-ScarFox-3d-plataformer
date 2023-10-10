@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://dwdiv242fslug"]
+
+[ext_resource type="Script" path="res://Plataform Obstacles/Moving Platform - Linear.gd" id="1_iij8p"]
+[ext_resource type="ArrayMesh" uid="uid://bk3g1ymevfvv4" path="res://addons/kaykit_dungeon_remastered/Assets/obj/floor_tile_small_weeds_A.obj" id="2_dx2nx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1p30r"]
+size = Vector3(1.99611, 0.217098, 1.9448)
+
+[sub_resource type="SphereMesh" id="SphereMesh_d8xgo"]
+
+[node name="Moving Platform - Linear" type="Node3D" node_paths=PackedStringArray("trail", "platform")]
+script = ExtResource("1_iij8p")
+trail = NodePath("Trail")
+platform = NodePath("Platform")
+
+[node name="Platform" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_dx2nx")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="Platform"]
+collision_mask = 3
+gravity_scale = 0.0
+lock_rotation = true
+freeze = true
+freeze_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform/RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0442008, 0)
+shape = SubResource("BoxShape3D_1p30r")
+
+[node name="Trail" type="Node3D" parent="."]
+
+[node name="0" type="Node3D" parent="Trail"]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/0"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_d8xgo")
+
+[node name="1" type="Node3D" parent="Trail"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2046, 0, 0)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/1"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_d8xgo")
+
+[node name="2" type="Node3D" parent="Trail"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2046, 0, 5.81835)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/2"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_d8xgo")
+
+[node name="3" type="Node3D" parent="Trail"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0897288, 0, 5.81835)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/3"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_d8xgo")

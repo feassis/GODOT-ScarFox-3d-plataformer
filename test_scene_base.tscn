@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://xxdn0e0333la"]
+[gd_scene load_steps=10 format=3 uid="uid://xxdn0e0333la"]
 
 [ext_resource type="PackedScene" uid="uid://dgv8rdhc1pmqb" path="res://Grids/GridMaps/proto_type_floor_grid_map.tscn" id="1_hskch"]
 [ext_resource type="PackedScene" uid="uid://b20okidvm1vct" path="res://Character/Scenes/player.tscn" id="2_36j0l"]
 [ext_resource type="PackedScene" uid="uid://bh2xcqq1yfr2c" path="res://box_a.tscn" id="3_ivgn8"]
 [ext_resource type="Script" path="res://Plataform Obstacles/DeathPlane.gd" id="4_cqxpn"]
+[ext_resource type="PackedScene" uid="uid://dwdiv242fslug" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mrj58"]
 
@@ -57,6 +58,10 @@ script = ExtResource("4_cqxpn")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DeathPlane"]
 shape = SubResource("BoxShape3D_xru63")
+
+[node name="Moving Platform - Linear" parent="." instance=ExtResource("5_x3k8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.39474, 1.92117, -6.7507)
+movementType = 1
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]
