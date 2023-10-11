@@ -1,12 +1,14 @@
 extends CharacterBody3D
 class_name Player
 
-@export_category("Setup -> Movement")
+@export_category("Setup -> Movement -> Platform Mode")
 @export var normalSpeed: float = 5.0
 @export var sprintSpeed: float = 9.0
 @export var deacelerationOnAir: float = 1.0
 @export var deacelerationOnFloor: float = 15.0
 @export var onAirDamping: float = 0.3
+
+@export_category("Setup -> Movement -> Shooter Mode")
 
 @export_category("Setup -> Jump")
 @export var JUMP_VELOCITY: float = 4.5
@@ -27,10 +29,17 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @export_category("Objects")
 @export var body: Body = null
-@export var springArmOffset: Node3D = null
+@export var plataformCamera: ThirdPersonCamera = null
+@export var shooterSpringArm: Node3D = null
+
+var startPos
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	startPos = global_position
+
+func GoToSpawnPosition():
+	global_position = startPos
 
 func _physics_process(delta):
 	
@@ -54,13 +63,23 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_released("jump"):
 		jumpButtonIsPressed = false
-
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	direction = direction.rotated(Vector3.UP, springArmOffset.rotation.y)
+	Move(direction, delta)
+
+	move_and_slide()
+	
+	if is_on_floor():
+		body.animate(velocity)
+	else:
+		body.PlayAnimation(Body.AnimEnumState.Falling)
+
+func Move(direction: Vector3, delta:float) -> void:
+	direction = direction.rotated(Vector3.UP, plataformCamera.get_camera().rotation.y)
 	
 	if not is_on_floor():
 		_currentSpeed *= onAirDamping
@@ -77,13 +96,6 @@ func _physics_process(delta):
 		if is_on_floor():
 			velocity.x = move_toward(velocity.x, 0,deacelerationOnFloor * delta)
 			velocity.z = move_toward(velocity.z, 0, deacelerationOnFloor * delta)
-
-	move_and_slide()
-	
-	if is_on_floor():
-		body.animate(velocity)
-	else:
-		body.PlayAnimation(Body.AnimEnumState.Falling)
 
 func is_running() -> bool:
 	if Input.is_action_pressed("run"):

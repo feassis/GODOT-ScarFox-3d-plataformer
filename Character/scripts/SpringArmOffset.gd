@@ -4,7 +4,7 @@ class_name CharacterSpringArm
 @export_category("Setup")
 @export var mouseSensibility: float = 0.005
 @export var cameraXRotationLowerBound: float = -PI/4
-@export var cameraXRotationUpperBound: float = PI/24
+@export var cameraXRotationUpperBound: float = PI/12
 
 @export_category("Objects")
 @export var springArm: SpringArm3D = null
