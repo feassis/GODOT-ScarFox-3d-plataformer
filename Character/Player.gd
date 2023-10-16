@@ -14,6 +14,10 @@ class_name Player
 @export var gravityIncrease: float = 9.8
 @export var jumpButtonGracePeriod: float = 0.5
 
+@export_category("Camera")
+@export var platformSpringArm: CharacterSpringArm = null
+@export var shooterSpringArm: CharacterSpringArm = null
+
 var _currentSpeed: float = normalSpeed
 var onJumpStartSpeed: float = 0
 var isOnCayoteTime: bool = false
@@ -21,6 +25,7 @@ var cayoteTimeExpired: bool = false
 var cayoteTimer: float = 0
 var jumpButtonIsPressed: bool = false
 var jumpButtonGraceTimer = 0
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -33,6 +38,14 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
+	
+	if Input.is_action_just_pressed("aim"):
+		platformSpringArm.GetCamera().current = false
+		shooterSpringArm.GetCamera().current = true
+	
+	if Input.is_action_just_released("aim"):
+		platformSpringArm.GetCamera().current = true
+		shooterSpringArm.GetCamera().current = false
 	
 	HandleFallingLogic(delta)
 	
