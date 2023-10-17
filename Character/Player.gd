@@ -40,6 +40,7 @@ var cameraIsTransitioning: bool
 var cameraTween
 var gameplayMode: GameState = GameState.PlatformMode
 var jumped: bool = false
+var gameStateRequestedLast:GameState = GameState.PlatformMode
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -50,10 +51,13 @@ func _ready():
 func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("aim"):
-		CameraTransition(platformSpringArm, shooterSpringArm, cameraTransitionDuration)
+		gameStateRequestedLast = GameState.ShooterMode
 	
 	if Input.is_action_just_released("aim"):
-		CameraTransition(shooterSpringArm, platformSpringArm,  cameraTransitionDuration)
+		gameStateRequestedLast = GameState.PlatformMode
+	
+	if CanChangeState() and gameStateRequestedLast != gameplayMode:
+		ChangeGameplayState(gameStateRequestedLast)
 	
 	HandleFallingLogic(delta)
 	
@@ -95,7 +99,7 @@ func Move(direction: Vector3, delta: float) -> void:
 			MoveOnPlatformMode(direction, delta)
 		
 		GameState.ShooterMode:
-			pass
+			MoveOnShooterMode(direction, delta)
 			
 
 func SetMoveSpeed() -> void:
@@ -112,12 +116,30 @@ func SetMoveSpeed() -> void:
 			else:
 				_currentSpeed = shooterNormalSpeed
 
+func ChangeGameplayState(desiredState: GameState):
+	gameplayMode = desiredState
+	match desiredState:
+		GameState.PlatformMode:
+			CameraTransition(shooterSpringArm, platformSpringArm,  cameraTransitionDuration)
+		
+		GameState.ShooterMode:
+			CameraTransition(platformSpringArm, shooterSpringArm, cameraTransitionDuration)
+			
+func CanChangeState() -> bool:
+	return not cameraIsTransitioning
+
+func MoveOnShooterMode(direction: Vector3, delta: float):
+	if direction:
+		if is_on_floor():
+			velocity.x = direction.x * _currentSpeed
+			velocity.z = direction.z * _currentSpeed
+	else:
+		if is_on_floor():
+			velocity.x = move_toward(velocity.x, 0, deacelerationOnFloor * delta)
+			velocity.z = move_toward(velocity.z, 0, deacelerationOnFloor * delta)
+	body. apply_rotation_custom_velocity(-shooterSpringArm.camera.get_camera_transform().basis.z.normalized(), 1)
+
 func MoveOnPlatformMode(direction: Vector3, delta: float):
-	
-	
-	if not is_on_floor():
-		_currentSpeed *= onAirDamping
-	
 	if direction:
 		if is_on_floor():
 			velocity.x = direction.x * _currentSpeed
