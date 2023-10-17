@@ -13,6 +13,12 @@ func apply_rotation(velocity: Vector3) -> void:
 	rotation.y = lerp_angle(
 		rotation.y,  angularVelocity, rotationVelocity
 	)
+	
+func apply_rotation_custom_velocity(velocity: Vector3, customVelocity:float) -> void:
+	var angularVelocity:float = atan2( velocity.x, velocity.z)
+	rotation.y = lerp_angle(
+		rotation.y,  angularVelocity, customVelocity
+	)
 
 func PlayAnimation(state : AnimEnumState) -> void:
 	match state:
