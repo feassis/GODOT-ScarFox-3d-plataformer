@@ -61,6 +61,7 @@ func _physics_process(delta):
 
 	# Handle Jump.
 	if CanJump() and Input.is_action_just_pressed("jump"):
+		jumpButtonIsPressed = true
 		Jump()
 		
 	if jumpButtonIsPressed:
@@ -87,6 +88,8 @@ func _physics_process(delta):
 		body.PlayAnimation(Body.AnimEnumState.Falling)
 
 func Move(direction: Vector3, delta: float) -> void:
+	direction = direction.rotated(Vector3.UP, platformSpringArm.rotation.y)
+	
 	match gameplayMode:
 		GameState.PlatformMode:
 			MoveOnPlatformMode(direction, delta)
@@ -110,7 +113,7 @@ func SetMoveSpeed() -> void:
 				_currentSpeed = shooterNormalSpeed
 
 func MoveOnPlatformMode(direction: Vector3, delta: float):
-	direction = direction.rotated(Vector3.UP, platformSpringArm.rotation.y)
+	
 	
 	if not is_on_floor():
 		_currentSpeed *= onAirDamping
