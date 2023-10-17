@@ -110,7 +110,7 @@ func SetMoveSpeed() -> void:
 				_currentSpeed = shooterNormalSpeed
 
 func MoveOnPlatformMode(direction: Vector3, delta: float):
-	direction = direction.rotated(Vector3.UP, platformSpringArm.GetSpringArm().rotation.y)
+	direction = direction.rotated(Vector3.UP, platformSpringArm.rotation.y)
 	
 	if not is_on_floor():
 		_currentSpeed *= onAirDamping
@@ -168,8 +168,6 @@ func HandleFallingLogic(delta) -> void:
 func CameraTransition(from: CharacterSpringArm, to: CharacterSpringArm, duration: float = 1):
 	if cameraIsTransitioning:
 		return
-	print("Camera transition requested from " + from.name + " to:" + to.name)
-	
 	
 	cameraIsTransitioning = true
 	
