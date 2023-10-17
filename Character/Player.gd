@@ -17,6 +17,8 @@ class_name Player
 @export_category("Camera")
 @export var platformSpringArm: CharacterSpringArm = null
 @export var shooterSpringArm: CharacterSpringArm = null
+@export var transitionCamera: Camera3D = null
+@export var cameraTransitionDuration: float = 0.5
 
 var _currentSpeed: float = normalSpeed
 var onJumpStartSpeed: float = 0
@@ -25,6 +27,9 @@ var cayoteTimeExpired: bool = false
 var cayoteTimer: float = 0
 var jumpButtonIsPressed: bool = false
 var jumpButtonGraceTimer = 0
+var cameraIsTransitioning: bool
+
+var cameraTween
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -40,12 +45,10 @@ func _ready():
 func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("aim"):
-		platformSpringArm.GetCamera().current = false
-		shooterSpringArm.GetCamera().current = true
+		CameraTransition(platformSpringArm, shooterSpringArm, cameraTransitionDuration)
 	
 	if Input.is_action_just_released("aim"):
-		platformSpringArm.GetCamera().current = true
-		shooterSpringArm.GetCamera().current = false
+		CameraTransition(shooterSpringArm, platformSpringArm,  cameraTransitionDuration)
 	
 	HandleFallingLogic(delta)
 	
@@ -130,6 +133,29 @@ func HandleFallingLogic(delta) -> void:
 	elif is_on_floor() and (cayoteTimer > 0):
 		cayoteTimer = 0
 		cayoteTimeExpired = false
+
+func CameraTransition(from: CharacterSpringArm, to: CharacterSpringArm, duration: float = 1):
+	if cameraIsTransitioning:
+		return
+	print("Camera transition requested from " + from.name + " to:" + to.name)
+	
+	
+	cameraIsTransitioning = true
+	
+	transitionCamera.global_position = from.GetCamera().global_position
+	transitionCamera.global_rotation = from.GetCamera().global_rotation
+	
+	transitionCamera.current = true
+		
+	cameraTween = create_tween()
+	cameraTween.tween_property(transitionCamera, "global_position", to.GetCamera().global_position , duration)
+	cameraTween.parallel().tween_property(transitionCamera, "global_rotation", to.GetCamera().global_rotation , duration)
+	await cameraTween.finished
+	SwitchCamera(transitionCamera, to.GetCamera())
+
+func SwitchCamera(from: Camera3D, to: Camera3D):
+	to.current = true
+	cameraIsTransitioning = false
 
 func CanJump() -> bool:
 	return  is_on_floor() or isOnCayoteTime

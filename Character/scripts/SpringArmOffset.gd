@@ -19,3 +19,6 @@ func  _unhandled_input(event) -> void:
 
 func GetCamera() -> Camera3D:
 	return camera
+	
+func GetSpringArm() -> SpringArm3D:
+	return springArm
