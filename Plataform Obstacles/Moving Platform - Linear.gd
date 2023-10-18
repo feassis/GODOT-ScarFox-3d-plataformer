@@ -1,4 +1,4 @@
-extends Node3D
+extends CharacterBody3D
 class_name LinearMovingPlatform
 
 @export_category("Setup")
@@ -7,7 +7,6 @@ class_name LinearMovingPlatform
 
 @export_category("Object")
 @export var trail:Node3D = null
-@export var platform: Node3D = null
 
 enum MovementType {Ciclic, FollowTrack}
 var trailNodes: Array 
@@ -19,14 +18,15 @@ func _ready():
 	
 func _physics_process(delta):
 	var targetPos:Vector3 = (trailNodes[nodeIndex] as Node3D).position
-
 	
-	if platform.position.distance_squared_to(targetPos) < 0.01:
+	if position.distance_squared_to(targetPos) < 0.01:
 		SetNextNode()
 	
-	var direction =  (targetPos - platform.position).normalized()
+	var direction =  (targetPos - position).normalized()
 	
-	platform.position += direction * speed * delta
+	velocity = direction * speed
+	
+	move_and_slide()
 
 func SetNextNode() -> void:
 	match movementType:
@@ -48,3 +48,7 @@ func SetNextNode() -> void:
 				nodeIndex = trailNodes.size() - 1
 				isGoingForward = false
 				
+
+func GetVelocity() -> Vector3:
+	return velocity
+

@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://xxdn0e0333la"]
+[gd_scene load_steps=13 format=3 uid="uid://xxdn0e0333la"]
 
 [ext_resource type="PackedScene" uid="uid://dgv8rdhc1pmqb" path="res://Grids/GridMaps/proto_type_floor_grid_map.tscn" id="1_hskch"]
 [ext_resource type="PackedScene" uid="uid://b20okidvm1vct" path="res://Character/Scenes/player.tscn" id="2_36j0l"]
 [ext_resource type="PackedScene" uid="uid://bh2xcqq1yfr2c" path="res://box_a.tscn" id="3_ivgn8"]
 [ext_resource type="Script" path="res://Plataform Obstacles/DeathPlane.gd" id="4_cqxpn"]
-[ext_resource type="PackedScene" uid="uid://dwdiv242fslug" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
+[ext_resource type="Script" path="res://Plataform Obstacles/Moving Platform - Linear.gd" id="5_7lvbe"]
+[ext_resource type="ArrayMesh" uid="uid://bk3g1ymevfvv4" path="res://addons/kaykit_dungeon_remastered/Assets/obj/floor_tile_small_weeds_A.obj" id="6_6p0co"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mrj58"]
 
@@ -17,6 +18,11 @@ sky = SubResource("Sky_o3dqe")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xru63"]
 size = Vector3(150, 10, 150)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1p30r"]
+size = Vector3(1.99611, 0.217098, 1.9448)
+
+[sub_resource type="SphereMesh" id="SphereMesh_d8xgo"]
 
 [node name="TestSceneBase" type="Node3D"]
 
@@ -59,10 +65,62 @@ script = ExtResource("4_cqxpn")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DeathPlane"]
 shape = SubResource("BoxShape3D_xru63")
 
-[node name="Moving Platform - Linear" parent="." instance=ExtResource("5_x3k8v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.39474, 1.92117, -6.7507)
-movementType = 1
+[node name="Moving Platform - Linear" type="Node3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -8.39474, 1.92117, -6.7507)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="Moving Platform - Linear" node_paths=PackedStringArray("trail")]
+script = ExtResource("5_7lvbe")
+speed = 5.0
+trail = NodePath("../Trail")
+
+[node name="Area3D" type="Area3D" parent="Moving Platform - Linear/CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Moving Platform - Linear/CharacterBody3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.128942, 0)
+shape = SubResource("BoxShape3D_1p30r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Moving Platform - Linear/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0442008, 0)
+shape = SubResource("BoxShape3D_1p30r")
+
+[node name="Platform" type="MeshInstance3D" parent="Moving Platform - Linear/CharacterBody3D"]
+mesh = ExtResource("6_6p0co")
+skeleton = NodePath("../..")
+
+[node name="Trail" type="Node3D" parent="Moving Platform - Linear"]
+
+[node name="0" type="Node3D" parent="Moving Platform - Linear/Trail"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Moving Platform - Linear/Trail/0"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_d8xgo")
+
+[node name="1" type="Node3D" parent="Moving Platform - Linear/Trail"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2046, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Moving Platform - Linear/Trail/1"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_d8xgo")
+
+[node name="2" type="Node3D" parent="Moving Platform - Linear/Trail"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2046, 0, 1.65675)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Moving Platform - Linear/Trail/2"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_d8xgo")
+
+[node name="3" type="Node3D" parent="Moving Platform - Linear/Trail"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0897288, 0, 1.65675)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Moving Platform - Linear/Trail/3"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_d8xgo")
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]
 [connection signal="body_entered" from="DeathPlane" to="DeathPlane" method="_on_body_entered" flags=18]
+[connection signal="body_entered" from="Moving Platform - Linear/CharacterBody3D/Area3D" to="Moving Platform - Linear" method="_on_area_3d_body_entered" flags=18]

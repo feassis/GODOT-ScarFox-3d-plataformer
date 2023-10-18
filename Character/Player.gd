@@ -36,6 +36,7 @@ var cayoteTimer: float = 0
 var jumpButtonIsPressed: bool = false
 var jumpButtonGraceTimer = 0
 var cameraIsTransitioning: bool
+var spawnPosition
 
 var cameraTween
 var gameplayMode: GameState = GameState.PlatformMode
@@ -47,6 +48,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	spawnPosition = global_position
 
 func _physics_process(delta):
 	
@@ -213,5 +215,8 @@ func SwitchCamera(from: Camera3D, to: Camera3D):
 
 func CanJump() -> bool:
 	return  (is_on_floor() or isOnCayoteTime) and not jumped
+
+func GoToSpawnPosition():
+	global_position = spawnPosition
 
 enum GameState {PlatformMode, ShooterMode}

@@ -8,24 +8,28 @@ size = Vector3(1.99611, 0.217098, 1.9448)
 
 [sub_resource type="SphereMesh" id="SphereMesh_d8xgo"]
 
-[node name="Moving Platform - Linear" type="Node3D" node_paths=PackedStringArray("trail", "platform")]
+[node name="Moving Platform - Linear" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("trail")]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_iij8p")
-trail = NodePath("Trail")
-platform = NodePath("Platform")
+speed = 5.0
+trail = NodePath("../Trail")
 
-[node name="Platform" type="MeshInstance3D" parent="."]
-mesh = ExtResource("2_dx2nx")
+[node name="Area3D" type="Area3D" parent="CharacterBody3D"]
 
-[node name="RigidBody3D" type="RigidBody3D" parent="Platform"]
-collision_mask = 3
-gravity_scale = 0.0
-lock_rotation = true
-freeze = true
-freeze_mode = 1
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.128942, 0)
+shape = SubResource("BoxShape3D_1p30r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform/RigidBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0442008, 0)
 shape = SubResource("BoxShape3D_1p30r")
+
+[node name="Platform" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = ExtResource("2_dx2nx")
+skeleton = NodePath("../..")
 
 [node name="Trail" type="Node3D" parent="."]
 
@@ -59,3 +63,5 @@ visible = false
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/3"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("SphereMesh_d8xgo")
+
+[connection signal="body_entered" from="CharacterBody3D/Area3D" to="." method="_on_area_3d_body_entered"]
