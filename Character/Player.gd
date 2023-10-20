@@ -3,7 +3,7 @@ class_name Player
 
 @export_category("Setup -> Movement -> Platform")
 @export var normalSpeed: float = 5.0
-@export var sprintSpeed: float = 9.0
+@export var walkSpeed: float = 9.0
 @export var deacelerationOnAir: float = 1.0
 @export var deacelerationOnFloor: float = 15.0
 @export var onAirDamping: float = 0.3
@@ -89,7 +89,10 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	if is_on_floor():
-		body.animate(velocity)
+		if gameplayMode == GameState.PlatformMode:
+			body.animate(velocity, gameplayMode)
+		elif gameplayMode == GameState.ShooterMode:
+			body.animate(direction, gameplayMode)
 	else:
 		body.PlayAnimation(Body.AnimEnumState.Falling)
 
@@ -107,13 +110,13 @@ func Move(direction: Vector3, delta: float) -> void:
 func SetMoveSpeed() -> void:
 	match gameplayMode:
 		GameState.PlatformMode:
-			if is_running():
-				_currentSpeed = sprintSpeed
+			if is_walking():
+				_currentSpeed = walkSpeed
 			else:
 				_currentSpeed = normalSpeed
 		
 		GameState.ShooterMode:
-			if is_running():
+			if is_walking():
 				_currentSpeed = shooterSprintSpeed
 			else:
 				_currentSpeed = shooterNormalSpeed
@@ -155,8 +158,8 @@ func MoveOnPlatformMode(direction: Vector3, delta: float):
 			velocity.x = move_toward(velocity.x, 0,deacelerationOnFloor * delta)
 			velocity.z = move_toward(velocity.z, 0, deacelerationOnFloor * delta)
 
-func is_running() -> bool:
-	if Input.is_action_pressed("run"):
+func is_walking() -> bool:
+	if Input.is_action_pressed("walk"):
 		return true	
 		
 	return false
