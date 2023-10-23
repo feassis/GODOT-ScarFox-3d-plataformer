@@ -9,15 +9,11 @@ size = Vector3(1.99611, 0.217098, 1.9448)
 
 [node name="Moving Platform - Linear" type="Node3D"]
 
-[node name="Platform Body" type="RigidBody3D" parent="." node_paths=PackedStringArray("trail")]
+[node name="Platform Body" type="AnimatableBody3D" parent="." node_paths=PackedStringArray("trail")]
 collision_layer = 7
 collision_mask = 3
-gravity_scale = 0.0
-lock_rotation = true
-freeze = true
-freeze_mode = 1
 script = ExtResource("1_iij8p")
-speed = 5.0
+speed = 3.0
 trail = NodePath("../Trail")
 
 [node name="Collider" type="CollisionShape3D" parent="Platform Body"]

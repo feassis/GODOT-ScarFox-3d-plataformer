@@ -51,6 +51,18 @@ func PlayAnimation(state : AnimEnumState) -> void:
 		
 		AnimEnumState.Aim:
 			animation.play("1H_Ranged_Aiming")
+		
+		AnimEnumState.DodgeFoward:
+			animation.play("Dodge_Forward")
+		
+		AnimEnumState.DodgeBackward:
+			animation.play("Dodge_Backward")
+			
+		AnimEnumState.DodgeLeft:
+			animation.play("Dodge_Left")
+		
+		AnimEnumState.DodgeRight:
+			animation.play("Dodge_Right")
 
 func animate(velocity: Vector3, gameMode: Player.GameState) -> void:
 	match gameMode:
@@ -60,9 +72,24 @@ func animate(velocity: Vector3, gameMode: Player.GameState) -> void:
 			ShooterWalk(velocity)
 	
 func ShooterWalk(velocity: Vector3):
-	if velocity:
-		var goingz: bool = abs(velocity.x) < abs(velocity.z)
+	
+	var goingz: bool = abs(velocity.x) < abs(velocity.z)
 		
+	if character.isDashing:
+		if goingz:
+			if velocity.z > 0:
+				PlayAnimation(AnimEnumState.DodgeFoward)
+			else:
+				PlayAnimation(AnimEnumState.DodgeBackward)
+		else:
+			if velocity.x >= 0:
+				PlayAnimation(AnimEnumState.DodgeRight)
+			else:
+				PlayAnimation(AnimEnumState.DodgeLeft)
+		
+		return
+	
+	if velocity:		
 		if goingz:
 			if velocity.z >= 0:
 				if character.is_walking():
@@ -92,4 +119,4 @@ func PlatformWalk(velocity: Vector3):
 	PlayAnimation(AnimEnumState.Idle)
 
 
-enum AnimEnumState {Idle,Jump,Walk,Run, Falling, StrafeLeft, StrafeRight, WalkingBackwards, Aim}
+enum AnimEnumState {Idle,Jump,Walk,Run, Falling, StrafeLeft, StrafeRight, WalkingBackwards, Aim, DodgeFoward, DodgeBackward, DodgeLeft, DodgeRight }

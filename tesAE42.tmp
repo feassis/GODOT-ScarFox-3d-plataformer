@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b20okidvm1vct" path="res://Character/Scenes/player.tscn" id="2_36j0l"]
 [ext_resource type="PackedScene" uid="uid://bh2xcqq1yfr2c" path="res://box_a.tscn" id="3_ivgn8"]
 [ext_resource type="Script" path="res://Plataform Obstacles/DeathPlane.gd" id="4_cqxpn"]
-[ext_resource type="PackedScene" uid="uid://bxobxm1n7emnc" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
+[ext_resource type="PackedScene" uid="uid://dwdiv242fslug" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mrj58"]
 
@@ -16,7 +16,7 @@ background_mode = 2
 sky = SubResource("Sky_o3dqe")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xru63"]
-size = Vector3(216.524, 4.29113, 215.85)
+size = Vector3(150, 10, 150)
 
 [node name="TestSceneBase" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.270197, 0.315605, 0.116621)
@@ -38,11 +38,9 @@ data = {
 
 [node name="Player" parent="." instance=ExtResource("2_36j0l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04917, 0)
-deacelerationOnFloor = 30.0
 onAirDamping = 1.6
 JUMP_VELOCITY = 13.5
 gravityIncrease = 30.0
-dashVelocity = 50.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_45nc5")
@@ -64,16 +62,8 @@ script = ExtResource("4_cqxpn")
 shape = SubResource("BoxShape3D_xru63")
 
 [node name="Moving Platform - Linear" parent="." instance=ExtResource("5_x3k8v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5407, 1.82572, -6.97526)
-
-[node name="Platform Body" parent="Moving Platform - Linear" index="0"]
-speed = 4.0
-
-[node name="Collider" parent="Moving Platform - Linear/Platform Body" index="0"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0442008, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.39474, 1.92117, -6.7507)
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]
 [connection signal="body_entered" from="DeathPlane" to="DeathPlane" method="_on_body_entered" flags=18]
-
-[editable path="Moving Platform - Linear"]

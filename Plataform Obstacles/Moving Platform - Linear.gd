@@ -1,4 +1,4 @@
-extends RigidBody3D
+extends AnimatableBody3D
 class_name LinearMovingPlatform
 
 @export_category("Setup")

@@ -14,9 +14,11 @@ class_name Player
 @export var gravityIncrease: float = 9.8
 @export var jumpButtonGracePeriod: float = 0.5
 
-@export_category("Setup -> Movement -> Platform")
+@export_category("Setup -> Movement -> Shooter")
 @export var shooterNormalSpeed: float = 3.0
 @export var shooterSprintSpeed: float = 5.0
+@export var dashVelocity: float = 20
+@export var dashDuration: float = 0.5
 
 @export_category("Camera")
 @export var platformSpringArm: CharacterSpringArm = null
@@ -43,6 +45,9 @@ var gameplayMode: GameState = GameState.PlatformMode
 var jumped: bool = false
 var gameStateRequestedLast:GameState = GameState.PlatformMode
 
+var isDashing: bool = false
+var dashingTimer:float = 0
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -65,25 +70,15 @@ func _physics_process(delta):
 	
 	SetMoveSpeed()
 
-	# Handle Jump.
-	if CanJump() and Input.is_action_just_pressed("jump"):
-		jumpButtonIsPressed = true
-		Jump()
-		
-	if jumpButtonIsPressed:
-		jumpButtonGraceTimer += delta
-		if jumpButtonGraceTimer > jumpButtonGracePeriod:
-			jumpButtonIsPressed = false
-			jumpButtonGraceTimer = 0
-	
-	if Input.is_action_just_released("jump"):
-		jumpButtonIsPressed = false
+	HandleJumpLogic(delta)
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
+	HandleDashLogic(delta, direction)
+	
 	Move(direction, delta)
 
 	move_and_slide()
@@ -97,6 +92,9 @@ func _physics_process(delta):
 		body.PlayAnimation(Body.AnimEnumState.Falling)
 
 func Move(direction: Vector3, delta: float) -> void:
+	if isDashing:
+		return
+	
 	direction = direction.rotated(Vector3.UP, platformSpringArm.rotation.y)
 	
 	match gameplayMode:
@@ -106,6 +104,54 @@ func Move(direction: Vector3, delta: float) -> void:
 		GameState.ShooterMode:
 			MoveOnShooterMode(direction, delta)
 			
+func HandleDashLogic(delta:float, direction: Vector3):
+	if gameplayMode == GameState.PlatformMode:
+		return
+	
+	if direction == Vector3.ZERO:
+		direction = Vector3(0,0,1)
+	
+	direction = direction.rotated(Vector3.UP, shooterSpringArm.rotation.y)
+	
+	if CanDash() and Input.is_action_just_pressed("dodge"):
+		isDashing = true
+		
+		var goingz: bool = abs(direction.x) < abs(direction.z)
+		
+		if goingz:
+			velocity = Vector3(0,0,direction.z).normalized()*dashVelocity
+		else: 
+			velocity = Vector3(direction.x,0,0).normalized()*dashVelocity
+	if isDashing:
+		dashingTimer += delta
+		
+		if dashingTimer > dashDuration:
+			isDashing = false
+			dashingTimer = 0
+			velocity = Vector3.ZERO
+
+
+func CanDash() -> bool:
+	return not isDashing
+
+
+func HandleJumpLogic(delta:float):
+	if gameplayMode == GameState.ShooterMode:
+		return 
+	
+	# Handle Jump.
+	if CanJump() and Input.is_action_just_pressed("jump"):
+		jumpButtonIsPressed = true
+		Jump()
+		
+	if jumpButtonIsPressed:
+		jumpButtonGraceTimer += delta
+		if jumpButtonGraceTimer > jumpButtonGracePeriod:
+			jumpButtonIsPressed = false
+			jumpButtonGraceTimer = 0
+	
+	if Input.is_action_just_released("jump"):
+		jumpButtonIsPressed = false
 
 func SetMoveSpeed() -> void:
 	match gameplayMode:
@@ -131,7 +177,7 @@ func ChangeGameplayState(desiredState: GameState):
 			CameraTransition(platformSpringArm, shooterSpringArm, cameraTransitionDuration)
 			
 func CanChangeState() -> bool:
-	return not cameraIsTransitioning
+	return not cameraIsTransitioning and not isDashing
 
 func MoveOnShooterMode(direction: Vector3, delta: float):
 	if direction:
