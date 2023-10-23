@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends RigidBody3D
 class_name LinearMovingPlatform
 
 @export_category("Setup")
@@ -13,20 +13,22 @@ var trailNodes: Array
 var nodeIndex: int = 0
 var isGoingForward: bool = true
 
+var velocity: Vector3
+
 func _ready():
 	trailNodes = trail.get_children()
 	
+	
 func _physics_process(delta):
-	var targetPos:Vector3 = (trailNodes[nodeIndex] as Node3D).position
+	var targetPos= (trailNodes[nodeIndex] as Node3D).position
+	var direction =  (targetPos - position).normalized()
 	
 	if position.distance_squared_to(targetPos) < 0.01:
 		SetNextNode()
 	
-	var direction =  (targetPos - position).normalized()
+	velocity =  direction *  speed
+	global_position = global_position + velocity *  delta
 	
-	velocity = direction * speed
-	
-	move_and_slide()
 
 func SetNextNode() -> void:
 	match movementType:

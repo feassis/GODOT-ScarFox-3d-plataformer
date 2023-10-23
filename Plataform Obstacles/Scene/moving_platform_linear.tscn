@@ -1,67 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwdiv242fslug"]
+[gd_scene load_steps=5 format=3 uid="uid://bxobxm1n7emnc"]
 
 [ext_resource type="Script" path="res://Plataform Obstacles/Moving Platform - Linear.gd" id="1_iij8p"]
 [ext_resource type="ArrayMesh" uid="uid://bk3g1ymevfvv4" path="res://addons/kaykit_dungeon_remastered/Assets/obj/floor_tile_small_weeds_A.obj" id="2_dx2nx"]
+[ext_resource type="PackedScene" uid="uid://2g8xrlic8x03" path="res://Plataform Obstacles/Scene/trail.tscn" id="3_xpwfs"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1p30r"]
 size = Vector3(1.99611, 0.217098, 1.9448)
 
-[sub_resource type="SphereMesh" id="SphereMesh_d8xgo"]
-
 [node name="Moving Platform - Linear" type="Node3D"]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("trail")]
-collision_layer = 4
-collision_mask = 2
+[node name="Platform Body" type="RigidBody3D" parent="." node_paths=PackedStringArray("trail")]
+collision_layer = 7
+collision_mask = 3
+gravity_scale = 0.0
+lock_rotation = true
+freeze = true
+freeze_mode = 1
 script = ExtResource("1_iij8p")
 speed = 5.0
 trail = NodePath("../Trail")
 
-[node name="Area3D" type="Area3D" parent="CharacterBody3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.128942, 0)
-shape = SubResource("BoxShape3D_1p30r")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="Collider" type="CollisionShape3D" parent="Platform Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0442008, 0)
 shape = SubResource("BoxShape3D_1p30r")
 
-[node name="Platform" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="Platform" type="MeshInstance3D" parent="Platform Body/Collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0442008, 0)
 mesh = ExtResource("2_dx2nx")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="Trail" type="Node3D" parent="."]
-
-[node name="0" type="Node3D" parent="Trail"]
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/0"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = SubResource("SphereMesh_d8xgo")
-
-[node name="1" type="Node3D" parent="Trail"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2046, 0, 0)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/1"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = SubResource("SphereMesh_d8xgo")
-
-[node name="2" type="Node3D" parent="Trail"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2046, 0, 5.81835)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/2"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = SubResource("SphereMesh_d8xgo")
-
-[node name="3" type="Node3D" parent="Trail"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0897288, 0, 5.81835)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Trail/3"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = SubResource("SphereMesh_d8xgo")
-
-[connection signal="body_entered" from="CharacterBody3D/Area3D" to="." method="_on_area_3d_body_entered"]
+[node name="Trail" parent="." instance=ExtResource("3_xpwfs")]
