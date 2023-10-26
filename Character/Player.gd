@@ -13,6 +13,7 @@ class_name Player
 @export var cayoteTimeDuration: float = 0.5
 @export var gravityIncrease: float = 9.8
 @export var jumpButtonGracePeriod: float = 0.5
+@export var maxFallVelocity: float = 20
 
 @export_category("Setup -> Movement -> Shooter")
 @export var shooterNormalSpeed: float = 3.0
@@ -27,6 +28,7 @@ class_name Player
 @export var cameraTransitionDuration: float = 0.5
 
 @export_category("Objects")
+@export var activeWeapon: Node3D = null
 @export var body: Body = null
 @export var springArmOffset: Node3D = null
 
@@ -54,17 +56,11 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	spawnPosition = global_position
+	Globals.character = self
 
 func _physics_process(delta):
 	
-	if Input.is_action_just_pressed("aim"):
-		gameStateRequestedLast = GameState.ShooterMode
-	
-	if Input.is_action_just_released("aim"):
-		gameStateRequestedLast = GameState.PlatformMode
-	
-	if CanChangeState() and gameStateRequestedLast != gameplayMode:
-		ChangeGameplayState(gameStateRequestedLast)
+	HandleGameModeState()
 	
 	HandleFallingLogic(delta)
 	
@@ -80,6 +76,8 @@ func _physics_process(delta):
 	HandleDashLogic(delta, direction)
 	
 	Move(direction, delta)
+	
+	HandleAttackLogic()
 
 	move_and_slide()
 	
@@ -130,10 +128,34 @@ func HandleDashLogic(delta:float, direction: Vector3):
 			dashingTimer = 0
 			velocity = Vector3.ZERO
 
+func HandleGameModeState():
+	if Input.is_action_just_pressed("aim"):
+		gameStateRequestedLast = GameState.ShooterMode
+	
+	if Input.is_action_just_released("aim"):
+		gameStateRequestedLast = GameState.PlatformMode
+	
+	if CanChangeState() and gameStateRequestedLast != gameplayMode:
+		ChangeGameplayState(gameStateRequestedLast)
 
 func CanDash() -> bool:
 	return not isDashing
 
+func HandleAttackLogic():
+	if Input.is_action_just_pressed("shoot"):
+			Shoot()
+	
+	
+		
+func Shoot():
+	if gameplayMode == GameState.ShooterMode:
+		body.Shoot()
+		
+	if gameplayMode == GameState.PlatformMode:
+		pass
+	
+func Attack():
+	(activeWeapon as Weapon).TryAttack(shooterSpringArm.ray)
 
 func HandleJumpLogic(delta:float):
 	if gameplayMode == GameState.ShooterMode:
@@ -169,6 +191,8 @@ func SetMoveSpeed() -> void:
 
 func ChangeGameplayState(desiredState: GameState):
 	gameplayMode = desiredState
+	get_tree().call_group("OnGamemodeChange", "OnGameModeChange", gameplayMode)
+	
 	match desiredState:
 		GameState.PlatformMode:
 			CameraTransition(shooterSpringArm, platformSpringArm,  cameraTransitionDuration)
@@ -226,7 +250,7 @@ func HandleFallingLogic(delta) -> void:
 	
 	# Add the gravity.
 	if not is_on_floor():
-		velocity.y -= gravityOnBody * delta
+		velocity.y = clamp(velocity.y - gravityOnBody * delta, -maxFallVelocity, 2 * maxFallVelocity) 
 		if not isOnCayoteTime and not cayoteTimeExpired:
 			isOnCayoteTime = true
 		if isOnCayoteTime:

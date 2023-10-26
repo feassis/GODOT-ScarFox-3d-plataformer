@@ -8,6 +8,8 @@ class_name Body
 @export var character: Player= null
 @export var animation: AnimationPlayer = null
 
+var isShooting: bool
+
 func apply_rotation(velocity: Vector3) -> void:
 	var angularVelocity:float = atan2( velocity.x, velocity.z)
 	rotation.y = lerp_angle(
@@ -20,7 +22,7 @@ func apply_rotation_custom_velocity(velocity: Vector3, customVelocity:float) -> 
 		rotation.y,  angularVelocity, customVelocity
 	)
 
-func PlayAnimation(state : AnimEnumState) -> void:
+func PlayAnimation(state : AnimEnumState):
 	match state:
 		AnimEnumState.Idle:
 			animation.play("Idle")
@@ -63,8 +65,17 @@ func PlayAnimation(state : AnimEnumState) -> void:
 		
 		AnimEnumState.DodgeRight:
 			animation.play("Dodge_Right")
+		
+		AnimEnumState.OneHandAim:
+			animation.play("1H_Ranged_Aiming")
+		
+		AnimEnumState.OneHandShoot:
+			animation.play("1H_Ranged_Shoot")
 
 func animate(velocity: Vector3, gameMode: Player.GameState) -> void:
+	if isShooting:
+		return
+	
 	match gameMode:
 		Player.GameState.PlatformMode:
 			PlatformWalk(velocity)
@@ -118,5 +129,16 @@ func PlatformWalk(velocity: Vector3):
 		return
 	PlayAnimation(AnimEnumState.Idle)
 
+func Shoot():
+	isShooting = true
+	PlayAnimation(AnimEnumState.OneHandShoot)
 
-enum AnimEnumState {Idle,Jump,Walk,Run, Falling, StrafeLeft, StrafeRight, WalkingBackwards, Aim, DodgeFoward, DodgeBackward, DodgeLeft, DodgeRight }
+
+enum AnimEnumState {Idle,Jump,Walk,Run, Falling, StrafeLeft, StrafeRight, WalkingBackwards, Aim, DodgeFoward, DodgeBackward, DodgeLeft, DodgeRight,  OneHandAim, OneHandShoot}
+
+
+
+func _on_animation_player_animation_finished(anim_name):
+	match anim_name:
+		"1H_Ranged_Shoot":
+			isShooting = false

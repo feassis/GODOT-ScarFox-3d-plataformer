@@ -5,10 +5,13 @@ class_name CharacterSpringArm
 @export var mouseSensibility: float = 0.005
 @export var cameraXRotationLowerBound: float = -PI/3
 @export var cameraXRotationUpperBound: float = PI/10
+@export var debugOn:bool = false 
 
 @export_category("Objects")
 @export var springArm: SpringArm3D = null
 @export var camera: Camera3D = null
+@export var ray: RayCast3D = null
+@export var debugSphere: Node3D = null
 
 func  _unhandled_input(event) -> void:
 	if event is InputEventMouseMotion:
@@ -22,3 +25,18 @@ func GetCamera() -> Camera3D:
 	
 func GetSpringArm() -> SpringArm3D:
 	return springArm
+
+func _ready():
+	if debugOn:
+		debugSphere.show()
+	else: 
+		debugSphere.hide()
+
+func _process(delta):
+	if not debugOn:
+		return
+	
+	if ray.is_colliding():
+		debugSphere.global_position = ray.get_collision_point()
+	else:
+		debugSphere.global_position = ray.global_position + (ray.global_transform.basis.z).normalized() * -15
