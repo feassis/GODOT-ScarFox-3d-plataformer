@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://nxuyx4q6826d"]
+
+[ext_resource type="Texture2D" uid="uid://bdo15h3qk2adl" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/arrow_01e.png" id="1_s2fh3"]
+
+[node name="Ammo" type="TextureRect"]
+texture = ExtResource("1_s2fh3")
+stretch_mode = 4

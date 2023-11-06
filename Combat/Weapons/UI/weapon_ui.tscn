@@ -1,0 +1,88 @@
+[gd_scene load_steps=6 format=3 uid="uid://7kyk2xb17imt"]
+
+[ext_resource type="Script" path="res://Combat/Weapons/UI/WeaponInfoDisplayUI.gd" id="1_5ll8n"]
+[ext_resource type="Texture2D" uid="uid://7irggkqcmvb1" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/bow_01a.png" id="2_cj7ii"]
+[ext_resource type="PackedScene" uid="uid://nxuyx4q6826d" path="res://Combat/Weapons/UI/AmmoUI.tscn" id="2_e3u6j"]
+[ext_resource type="Texture2D" uid="uid://djf5gi08t5xwe" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/shard_01e.png" id="4_d4mhk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4xan6"]
+font_size = 15
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Weapon UI" type="Control" node_paths=PackedStringArray("ammoContainter", "realodingProgresseBar", "reloadingLabel", "cooldownBar", "weaponIcon")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5ll8n")
+ammoContainter = NodePath("VBoxContainer/HContainer")
+realodingProgresseBar = NodePath("VBoxContainer/Reloading")
+reloadingLabel = NodePath("VBoxContainer/Reloading/Label")
+cooldownBar = NodePath("CDProgressBar")
+weaponIcon = NodePath("VBoxContainer/HContainer/WeaponTexture")
+ammoPrefab = ExtResource("2_e3u6j")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -28.0
+offset_right = 308.0
+offset_bottom = 28.0
+grow_vertical = 2
+
+[node name="HContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="WeaponTexture" type="TextureRect" parent="VBoxContainer/HContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("2_cj7ii")
+stretch_mode = 4
+
+[node name="Reloading" type="ProgressBar" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+step = 0.0
+rounded = true
+show_percentage = false
+
+[node name="Label" type="Label" parent="VBoxContainer/Reloading"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.5
+offset_top = -13.0
+offset_right = 38.5
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Reloading"
+label_settings = SubResource("LabelSettings_4xan6")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CDProgressBar" type="TextureProgressBar" parent="."]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+step = 0.001
+value = 0.5
+fill_mode = 5
+texture_progress = ExtResource("4_d4mhk")
