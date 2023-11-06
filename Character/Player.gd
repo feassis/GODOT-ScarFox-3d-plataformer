@@ -103,6 +103,15 @@ func Move(direction: Vector3, delta: float) -> void:
 			MoveOnShooterMode(direction, delta)
 			
 func HandleDashLogic(delta:float, direction: Vector3):
+	if isDashing:
+		dashingTimer -= delta
+		
+		if dashingTimer <= 0:
+			isDashing = false
+			dashingTimer = 0
+			#velocity = Vector3.ZERO
+	
+	
 	if gameplayMode == GameState.PlatformMode:
 		return
 	
@@ -113,6 +122,7 @@ func HandleDashLogic(delta:float, direction: Vector3):
 	
 	if CanDash() and Input.is_action_just_pressed("dodge"):
 		isDashing = true
+		dashingTimer = dashDuration
 		
 		var goingz: bool = abs(direction.x) < abs(direction.z)
 		
@@ -120,13 +130,11 @@ func HandleDashLogic(delta:float, direction: Vector3):
 			velocity = Vector3(0,0,direction.z).normalized()*dashVelocity
 		else: 
 			velocity = Vector3(direction.x,0,0).normalized()*dashVelocity
-	if isDashing:
-		dashingTimer += delta
-		
-		if dashingTimer > dashDuration:
-			isDashing = false
-			dashingTimer = 0
-			velocity = Vector3.ZERO
+
+func ForceDash(dashForce: Vector3, dashTime: float):
+	isDashing = true
+	dashingTimer = dashTime
+	velocity = dashForce
 
 func HandleGameModeState():
 	if Input.is_action_just_pressed("aim"):
@@ -149,10 +157,11 @@ func HandleAttackLogic():
 		
 func Shoot():
 	if gameplayMode == GameState.ShooterMode:
-		body.Shoot()
+		if activeWeapon.CanShoot():
+			body.Shoot()
 		
 	if gameplayMode == GameState.PlatformMode:
-		pass
+		(activeWeapon as Weapon).TryAttackMovementSkill()
 	
 func Attack():
 	(activeWeapon as Weapon).TryAttack(shooterSpringArm.ray)
@@ -162,9 +171,12 @@ func HandleJumpLogic(delta:float):
 		return 
 	
 	# Handle Jump.
-	if CanJump() and Input.is_action_just_pressed("jump"):
-		jumpButtonIsPressed = true
-		Jump()
+	if Input.is_action_just_pressed("jump"):
+		if CanJump():
+			jumpButtonIsPressed = true
+			Jump()
+		else:
+			(activeWeapon as Weapon).TrySpaceMovementSkill()
 		
 	if jumpButtonIsPressed:
 		jumpButtonGraceTimer += delta

@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://xxdn0e0333la"]
+[gd_scene load_steps=11 format=3 uid="uid://xxdn0e0333la"]
 
 [ext_resource type="PackedScene" uid="uid://dgv8rdhc1pmqb" path="res://Grids/GridMaps/proto_type_floor_grid_map.tscn" id="1_hskch"]
 [ext_resource type="PackedScene" uid="uid://b20okidvm1vct" path="res://Character/Scenes/player.tscn" id="2_36j0l"]
 [ext_resource type="PackedScene" uid="uid://bh2xcqq1yfr2c" path="res://box_a.tscn" id="3_ivgn8"]
 [ext_resource type="Script" path="res://Plataform Obstacles/DeathPlane.gd" id="4_cqxpn"]
 [ext_resource type="PackedScene" uid="uid://bxobxm1n7emnc" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
+[ext_resource type="PackedScene" uid="uid://bi3fc1tl4boxu" path="res://UI/gui.tscn" id="6_falde"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mrj58"]
 
@@ -71,6 +72,8 @@ speed = 4.0
 
 [node name="Collider" parent="Moving Platform - Linear/Platform Body" index="0"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0442008, 0)
+
+[node name="GUI" parent="." instance=ExtResource("6_falde")]
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]
