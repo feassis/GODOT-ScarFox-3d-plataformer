@@ -1,0 +1,121 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3gwubm8s58bw"]
+
+[ext_resource type="Script" path="res://UI/CombatUI/player_health_bar.gd" id="1_ymh5e"]
+[ext_resource type="Texture2D" uid="uid://cjh3c8j2lnt" path="res://addons/Pixel Health Bar 1/Pixel1_Healthbar_0003_pixel1_healthbarcomplete.png" id="2_bf67q"]
+
+[node name="PlayerHealthBar" type="Control" node_paths=PackedStringArray("heathBar")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ymh5e")
+heathBar = NodePath("HealthBar")
+
+[node name="Dynamite" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(3, 3)
+
+[node name="D1" type="Control" parent="Dynamite"]
+anchors_preset = 0
+offset_left = 42.0
+offset_top = 2.0
+offset_right = 82.0
+offset_bottom = 42.0
+rotation = 1.5708
+
+[node name="Body" type="ColorRect" parent="Dynamite/D1"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Body3" type="ColorRect" parent="Dynamite/D1"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 8.0
+offset_bottom = 39.0
+color = Color(0.85098, 0, 0, 1)
+
+[node name="Body2" type="ColorRect" parent="Dynamite/D1"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 17.0
+offset_right = 10.0
+offset_bottom = 24.0
+color = Color(0.827451, 0.694118, 0.137255, 1)
+
+[node name="D2" type="Control" parent="Dynamite"]
+anchors_preset = 0
+offset_left = 42.0
+offset_top = 11.0
+offset_right = 82.0
+offset_bottom = 51.0
+rotation = 1.5708
+
+[node name="Body" type="ColorRect" parent="Dynamite/D2"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Body3" type="ColorRect" parent="Dynamite/D2"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 8.0
+offset_bottom = 39.0
+color = Color(0.85098, 0, 0, 1)
+
+[node name="Body2" type="ColorRect" parent="Dynamite/D2"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 17.0
+offset_right = 10.0
+offset_bottom = 24.0
+color = Color(0.827451, 0.694118, 0.137255, 1)
+
+[node name="D3" type="Control" parent="Dynamite"]
+anchors_preset = 0
+offset_left = 42.0
+offset_top = 20.0
+offset_right = 82.0
+offset_bottom = 60.0
+rotation = 1.5708
+
+[node name="Body" type="ColorRect" parent="Dynamite/D3"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Body3" type="ColorRect" parent="Dynamite/D3"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 8.0
+offset_bottom = 39.0
+color = Color(0.85098, 0, 0, 1)
+
+[node name="Body2" type="ColorRect" parent="Dynamite/D3"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 17.0
+offset_right = 10.0
+offset_bottom = 24.0
+color = Color(0.827451, 0.694118, 0.137255, 1)
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 106.0
+offset_top = -10.0
+offset_right = 236.0
+offset_bottom = 79.0
+scale = Vector2(3, 3)
+step = 0.001
+value = 100.0
+texture_progress = ExtResource("2_bf67q")

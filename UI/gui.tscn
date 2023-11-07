@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bi3fc1tl4boxu"]
+[gd_scene load_steps=5 format=3 uid="uid://bi3fc1tl4boxu"]
 
 [ext_resource type="PackedScene" uid="uid://baxq44q4m4osk" path="res://UI/crosshair.tscn" id="1_1tpaq"]
 [ext_resource type="Script" path="res://UI/gui.gd" id="1_5odhn"]
 [ext_resource type="PackedScene" uid="uid://7kyk2xb17imt" path="res://Combat/Weapons/UI/weapon_ui.tscn" id="2_nh36b"]
+[ext_resource type="PackedScene" uid="uid://d3gwubm8s58bw" path="res://UI/CombatUI/player_health_bar.tscn" id="4_aijba"]
 
 [node name="GUI" type="Control" node_paths=PackedStringArray("shooterExclusiveUI", "platformExclusiveUI", "weaponContainerHolder") groups=["OnGamemodeChange"]]
 layout_mode = 3
@@ -48,3 +49,13 @@ custom_minimum_size = Vector2(0, 90)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="PlayerHealthBar" parent="." instance=ExtResource("4_aijba")]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_right = 0.0
+offset_top = -106.0
+offset_bottom = -106.0
+grow_horizontal = 1
+grow_vertical = 0
