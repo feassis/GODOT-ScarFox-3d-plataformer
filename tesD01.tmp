@@ -1,0 +1,90 @@
+[gd_scene load_steps=12 format=3 uid="uid://xxdn0e0333la"]
+
+[ext_resource type="PackedScene" uid="uid://dgv8rdhc1pmqb" path="res://Grids/GridMaps/proto_type_floor_grid_map.tscn" id="1_hskch"]
+[ext_resource type="PackedScene" uid="uid://b20okidvm1vct" path="res://Character/Scenes/player.tscn" id="2_36j0l"]
+[ext_resource type="PackedScene" uid="uid://bh2xcqq1yfr2c" path="res://box_a.tscn" id="3_ivgn8"]
+[ext_resource type="Script" path="res://Plataform Obstacles/DeathPlane.gd" id="4_cqxpn"]
+[ext_resource type="PackedScene" uid="uid://bxobxm1n7emnc" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
+[ext_resource type="PackedScene" uid="uid://bi3fc1tl4boxu" path="res://UI/gui.tscn" id="6_falde"]
+[ext_resource type="PackedScene" uid="uid://cqupgd4lnmhik" path="res://Enemies/shooting_enemy.tscn" id="7_uhme4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mrj58"]
+
+[sub_resource type="Sky" id="Sky_o3dqe"]
+sky_material = SubResource("ProceduralSkyMaterial_mrj58")
+
+[sub_resource type="Environment" id="Environment_45nc5"]
+background_mode = 2
+sky = SubResource("Sky_o3dqe")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xru63"]
+size = Vector3(216.524, 4.29113, 215.85)
+
+[node name="TestScene" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.270197, 0.315605, 0.116621)
+
+[node name="Floor1" type="Node3D" parent="."]
+
+[node name="ProtoTypeFloorGridMap" parent="Floor1" instance=ExtResource("1_hskch")]
+data = {
+"cells": PackedInt32Array(0, 0, 0, 65535, 65535, 0, 0, 65535, 0, 65534, 65535, 0, 65534, 0, 0, 65534, 1, 0, 65535, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 65535, 0, 1, 65534, 0, 0, 65534, 0, 65535, 65534, 0, 65534, 65534, 0, 65533, 2, 2, 65533, 0, 2, 65533, 65535, 2, 65533, 65534, 2, 65533, 65533, 2, 65534, 65533, 2, 65535, 65533, 2, 0, 65533, 2, 1, 65533, 2, 2, 65533, 2, 2, 65535, 2, 2, 0, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 0, 2, 2, 65535, 2, 2, 65534, 2, 2, 2, 3, 3, 2, 4, 3, 2, 5, 3, 2, 6, 3, 2, 7, 3, 65533, 3, 3, 65533, 4, 3, 65533, 5, 3, 65533, 6, 3, 65533, 7, 3, 65534, 7, 3, 65535, 7, 3, 0, 7, 3, 1, 7, 3, 0, 5, 4, 65535, 5, 4, 65535, 4, 4, 0, 4, 4, 1, 3, 1, 0, 3, 1, 65535, 3, 1, 65534, 3, 1, 65534, 4, 1, 65534, 5, 1, 65534, 6, 1, 65535, 6, 1, 0, 6, 1, 1, 6, 1, 1, 5, 1, 1, 4, 1, 1, 65531, 0, 65534, 65531, 0, 65535, 65529, 0, 0, 65529, 0, 2, 65532, 0, 65533, 65532, 0, 65533, 65529, 0, 2, 65529, 0, 0, 65527, 0, 65535, 65527, 0, 65534, 65527, 0, 1, 65527, 0, 2, 65534, 1441794, 65533, 1, 2, 65519, 65534, 2, 65519, 65535, 2, 65519, 0, 2, 65519, 1, 2, 65535, 0, 1441792, 65519, 2, 1441794, 65519, 65533, 1441794, 65518, 2, 1441794, 65517, 2, 1441794, 65516, 2, 1441794, 65515, 2, 1441794, 65514, 2, 1441794, 65514, 1, 1441794, 65514, 0, 1441794, 65514, 65535, 1441794, 65514, 65534, 1441794, 65514, 65533, 1441794, 65518, 65533, 1441794, 65517, 65533, 1441794, 65516, 65533, 1441794, 65515, 65533, 1441794, 65518, 1, 1441792, 65518, 0, 1441792, 65518, 65535, 1441792, 65517, 65535, 1441792, 65517, 65534, 1441792, 65518, 65534, 1441792, 65517, 0, 1441792, 65517, 1, 1441792, 65516, 1, 1441792, 65515, 1, 1441792, 65515, 0, 1441792, 65515, 65535, 1441792, 65515, 65534, 1441792, 65516, 65534, 1441792, 65516, 65535, 1441792, 65516, 0, 1441792)
+}
+
+[node name="Node3D" type="Node3D" parent="Floor1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00397778, 4.71231, 0.000114441)
+
+[node name="ProtoTypeFloorGridMap2" parent="Floor1/Node3D" instance=ExtResource("1_hskch")]
+data = {
+"cells": PackedInt32Array(5, 3, 655363, 4, 3, 524291, 4, 4, 524291, 5, 4, 655363, 5, 2, 655363, 5, 1, 655363, 5, 0, 655363, 5, 65535, 1048578, 4, 65535, 1048578, 6, 65535, 1048578)
+}
+
+[node name="Player" parent="." instance=ExtResource("2_36j0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04917, 0)
+deacelerationOnFloor = 30.0
+onAirDamping = 1.6
+JUMP_VELOCITY = 13.5
+gravityIncrease = 30.0
+dashVelocity = 50.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_45nc5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.169212, -0.956946, 0.235842, 0.222598, 0.270217, 0.936714, -0.960113, -0.106005, 0.258738, 0, 10.0416, 0)
+light_color = Color(0.996078, 0.878431, 0.803922, 1)
+shadow_enabled = true
+
+[node name="BoxA" parent="." instance=ExtResource("3_ivgn8")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 10.8063, 1.51995, 15.871)
+
+[node name="DeathPlane" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.75161, 0)
+collision_mask = 3
+script = ExtResource("4_cqxpn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DeathPlane"]
+shape = SubResource("BoxShape3D_xru63")
+
+[node name="Moving Platform - Linear" parent="." instance=ExtResource("5_x3k8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5407, 1.82572, -6.97526)
+
+[node name="Platform Body" parent="Moving Platform - Linear" index="0"]
+speed = 4.0
+
+[node name="Collider" parent="Moving Platform - Linear/Platform Body" index="0"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0442008, 0)
+
+[node name="GUI" parent="." instance=ExtResource("6_falde")]
+
+[node name="Shooting Enemy" parent="." instance=ExtResource("7_uhme4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47222, 20.1743)
+rotationVelocity = 1.0
+attackSpeed = 1.0
+facingAngle = 30.0
+dmg = 1.0
+
+[connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
+[connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]
+[connection signal="body_entered" from="DeathPlane" to="DeathPlane" method="_on_body_entered" flags=18]
+
+[editable path="Moving Platform - Linear"]

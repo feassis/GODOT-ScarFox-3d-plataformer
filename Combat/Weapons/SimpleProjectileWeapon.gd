@@ -9,6 +9,7 @@ extends Weapon
 @export var dashForce:float = 15
 @export var dashDuration: float = 0.3
 @export var cameraOffset:Vector3 = Vector3.ZERO
+@export var damage:float = 2
 
 func  _ready():
 	super()
@@ -39,7 +40,7 @@ func  TryAttack(cameraRay: RayCast3D):
 func Attack(cameraRay: RayCast3D):
 	super(cameraRay)
 	Globals.crosshair.PlayShootAnim()
-	var projectile = projectilePrefab.instantiate()
+	var projectile = SpawnProjectile()
 	var collisionPoint: Vector3
 	if cameraRay.is_colliding() && ((collisionPoint - cameraRay.global_transform.origin).length() > 10):
 		collisionPoint = cameraRay.get_collision_point() + cameraOffset
@@ -63,8 +64,13 @@ func ConsumeAmmo():
 func HasAmmo() -> bool:
 	return ammo > 0
 
-func SpaceMovementSkill():
+func SpawnProjectile() -> Node:
 	var projectile = projectilePrefab.instantiate()
+	(projectile as Projectile).damage = damage
+	return projectile
+
+func SpaceMovementSkill():
+	var projectile = SpawnProjectile()
 	projectileSpawnPosition.global_rotation_degrees = Vector3 (90, 0, 0)
 	projectile.global_transform = projectileSpawnPosition.global_transform
 		
@@ -85,7 +91,7 @@ func TryAttackMovementSkill():
 	AttackMovementSkill()
 
 func AttackMovementSkill():
-	var projectile = projectilePrefab.instantiate()
+	var projectile = SpawnProjectile()
 	projectile.global_transform = projectileSpawnPosition.global_transform
 		
 	get_tree().get_root().add_child(projectile)

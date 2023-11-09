@@ -7,6 +7,7 @@ class_name Projectile
 
 var startPosition: Vector3
 var gotoDirection: Vector3
+var damage: float
 
 func GetFowardVector() -> Vector3:
 	return global_transform.basis.z
@@ -25,3 +26,9 @@ func _physics_process(delta):
 func Destruction():
 	remove_child(self)
 	self.queue_free()
+
+
+func _on_body_entered(body):
+	if body is Enemy:
+		(body as Enemy).TakeDamage(damage)
+		Destruction()

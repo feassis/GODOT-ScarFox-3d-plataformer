@@ -21,6 +21,9 @@ class_name Player
 @export var dashVelocity: float = 20
 @export var dashDuration: float = 0.5
 
+@export_category("Combat")
+@export var health: Node3D
+
 @export_category("Camera")
 @export var platformSpringArm: CharacterSpringArm = null
 @export var shooterSpringArm: CharacterSpringArm = null
@@ -57,6 +60,8 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	spawnPosition = global_position
 	Globals.character = self
+	(health as Health).parent = self
+	(Globals.playerHealthBar as PlayerHealthBar).Setup((health as Health).MaxHP, (health as Health).currentHP)
 
 func _physics_process(delta):
 	
@@ -153,8 +158,6 @@ func HandleAttackLogic():
 	if Input.is_action_just_pressed("shoot"):
 			Shoot()
 	
-	
-		
 func Shoot():
 	if gameplayMode == GameState.ShooterMode:
 		if activeWeapon.CanShoot():
@@ -303,5 +306,17 @@ func CanJump() -> bool:
 
 func GoToSpawnPosition():
 	global_position = spawnPosition
+
+func TakeDamage(dmg:float):
+	(health as Health).TakeDamage(dmg)
+
+func OnDamageTaken():
+	(Globals.playerHealthBar as PlayerHealthBar).UpdateHP((health as Health).currentHP)
+
+func OnDeath():
+	pass
+	
+func OnHeal():
+	(Globals.playerHealthBar as PlayerHealthBar).UpdateHP((health as Health).currentHP)
 
 enum GameState {PlatformMode, ShooterMode}

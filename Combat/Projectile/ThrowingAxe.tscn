@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://cuhpmktfi4bnp"]
+
+[ext_resource type="Script" path="res://ThrowingAxe.gd" id="1_n34me"]
+[ext_resource type="PackedScene" uid="uid://3lyuotpyipkc" path="res://addons/kaykit_character_pack_adventures/Assets/gltf/axe_1handed.gltf" id="2_ukbia"]
+
+[sub_resource type="Animation" id="Animation_6uo83"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nbe1l"]
+resource_name = "ThrowingIdle"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(0, 1.5708, 6.28319)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7qj30"]
+_data = {
+"RESET": SubResource("Animation_6uo83"),
+"ThrowingIdle": SubResource("Animation_nbe1l")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g8oxk"]
+size = Vector3(0.1, 0.918113, 0.389255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gqs33"]
+size = Vector3(0.191184, 1.02646, 0.63532)
+
+[node name="Axe" type="RigidBody3D"]
+collision_layer = 8
+script = ExtResource("1_n34me")
+projectileSpeed = 20.0
+
+[node name="Mesh" parent="." instance=ExtResource("2_ukbia")]
+transform = Transform3D(-3.61999e-06, 0, 1, 0, 1, 0, -1, 0, -3.61999e-06, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "ThrowingIdle"
+libraries = {
+"": SubResource("AnimationLibrary_7qj30")
+}
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.428097, 0.116261)
+shape = SubResource("BoxShape3D_g8oxk")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.457185, 0.223829)
+shape = SubResource("BoxShape3D_gqs33")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
