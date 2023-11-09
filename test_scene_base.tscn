@@ -78,6 +78,8 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0442008, 0)
 
 [node name="Shooting Enemy" parent="." instance=ExtResource("7_uhme4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47222, 20.1743)
+rotationVelocity = 1.0
+yOffset = 3.0
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]

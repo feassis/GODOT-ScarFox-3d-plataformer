@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3gwubm8s58bw"]
 
 [ext_resource type="Script" path="res://UI/CombatUI/player_health_bar.gd" id="1_ymh5e"]
-[ext_resource type="Texture2D" uid="uid://cjh3c8j2lnt" path="res://addons/Pixel Health Bar 1/Pixel1_Healthbar_0003_pixel1_healthbarcomplete.png" id="2_bf67q"]
+[ext_resource type="Texture2D" uid="uid://dhm0wdecws1w0" path="res://addons/hpbar.png" id="2_6kjui"]
 
 [node name="PlayerHealthBar" type="Control" node_paths=PackedStringArray("heathBar")]
 layout_mode = 3
@@ -111,11 +111,11 @@ color = Color(0.827451, 0.694118, 0.137255, 1)
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 layout_mode = 0
-offset_left = 106.0
-offset_top = -10.0
-offset_right = 236.0
-offset_bottom = 79.0
-scale = Vector2(3, 3)
+offset_left = 130.0
+offset_top = 25.0
+offset_right = 568.0
+offset_bottom = 59.0
+max_value = 10.0
 step = 0.001
-value = 100.0
-texture_progress = ExtResource("2_bf67q")
+value = 10.0
+texture_progress = ExtResource("2_6kjui")

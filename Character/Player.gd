@@ -307,6 +307,9 @@ func CanJump() -> bool:
 func GoToSpawnPosition():
 	global_position = spawnPosition
 
+func TakeDamage(dmg:float):
+	(health as Health).TakeDamage(dmg)
+
 func OnDamageTaken():
 	(Globals.playerHealthBar as PlayerHealthBar).UpdateHP((health as Health).currentHP)
 
