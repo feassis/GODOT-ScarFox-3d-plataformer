@@ -11,19 +11,6 @@ extends Weapon
 @export var cameraOffset:Vector3 = Vector3.ZERO
 @export var damage:float = 2
 
-func  _ready():
-	super()
-	ammo = magazineSize
-
-func _process(delta):
-	super(delta)
-	if hasToReload and (Globals.character as Player).is_on_floor():
-		reloadingTimer -= delta
-		
-		if reloadingTimer <= 0:
-			weaponUI.InstantiateAllAmmo()
-			ammo = magazineSize
-			hasToReload = false
 
 func CanShoot():
 	return HasAmmo() and not IsOnCooldown()
@@ -34,7 +21,7 @@ func  TryAttack(cameraRay: RayCast3D):
 		
 	if not HasAmmo():
 		return
-		
+	
 	Attack(cameraRay)
 
 func Attack(cameraRay: RayCast3D):
@@ -59,10 +46,7 @@ func ConsumeAmmo():
 	
 	if ammo <=0:
 		hasToReload = true
-		reloadingTimer = reloadTime
-
-func HasAmmo() -> bool:
-	return ammo > 0
+		reloadingTimer = autoReloadTime
 
 func SpawnProjectile() -> Node:
 	var projectile = projectilePrefab.instantiate()

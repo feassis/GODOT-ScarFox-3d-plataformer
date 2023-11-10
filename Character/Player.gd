@@ -32,6 +32,7 @@ class_name Player
 
 @export_category("Objects")
 @export var activeWeapon: Node3D = null
+@export var offhandWeapon: Node3D = null
 @export var body: Body = null
 @export var springArmOffset: Node3D = null
 
@@ -114,7 +115,10 @@ func HandleDashLogic(delta:float, direction: Vector3):
 		if dashingTimer <= 0:
 			isDashing = false
 			dashingTimer = 0
-			#velocity = Vector3.ZERO
+			if gameplayMode == GameState.ShooterMode:
+				velocity = Vector3.ZERO
+			
+		
 	
 	
 	if gameplayMode == GameState.PlatformMode:
