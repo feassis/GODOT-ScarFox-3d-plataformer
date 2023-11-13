@@ -1,10 +1,10 @@
 extends Weapon
 class_name  OffHandWeapon
 
-func TryToMovementAttack():
+func TryToMovementAttack(inputDirection: Vector3):
 	pass
 	
-func MovementAttack():
+func MovementAttack(inputDirection: Vector3):
 	pass
 
 func GoToReloadingState():

@@ -130,15 +130,7 @@ func HandleDashLogic(delta:float, direction: Vector3):
 	direction = direction.rotated(Vector3.UP, shooterSpringArm.rotation.y)
 	
 	if CanDash() and Input.is_action_just_pressed("dodge"):
-		isDashing = true
-		dashingTimer = dashDuration
-		
-		var goingz: bool = abs(direction.x) < abs(direction.z)
-		
-		if goingz:
-			velocity = Vector3(0,0,direction.z).normalized()*dashVelocity
-		else: 
-			velocity = Vector3(direction.x,0,0).normalized()*dashVelocity
+		(offhandWeapon as OffHandWeapon).TryToMovementAttack(direction)
 
 func ForceDash(dashForce: Vector3, dashTime: float):
 	isDashing = true

@@ -49,6 +49,7 @@ custom_minimum_size = Vector2(0, 90)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_constants/separation = 90
 
 [node name="PlayerHealthBar" parent="." instance=ExtResource("4_aijba")]
 layout_mode = 1

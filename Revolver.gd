@@ -11,14 +11,19 @@ extends OffHandWeapon
 @export var projectileSpawnPosition: Node3D = null
 @export var projectilePrefab: PackedScene = null
 
-func TryToMovementAttack():
+func TryToMovementAttack(inputDirection: Vector3):
 	if not HasAmmo() or IsOnCooldown():
 		return
 	
-	MovementAttack()
+	MovementAttack(inputDirection)
 	
-func MovementAttack():
-	pass
+func MovementAttack(inputDirection: Vector3):
+	var goingz: bool = abs(inputDirection.x) < abs(inputDirection.z)
+	
+	if goingz:
+		(Globals.character as Player).ForceDash( Vector3(0,0,inputDirection.z).normalized()*dashVelocity, dashDuration)
+	else: 
+		(Globals.character as Player).ForceDash( Vector3(inputDirection.x,0,0).normalized()*dashVelocity, dashDuration)
 
 func GoToReloadingState():
 	pass
