@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0u6ebe21m1nw"]
+
+[ext_resource type="Script" path="res://Combat/Weapons/UI/ReloadBullet.gd" id="1_bcsh3"]
+[ext_resource type="Texture2D" uid="uid://bns4xv5mfxrxl" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/candle_01a.png" id="2_rohrf"]
+
+[node name="ReloadBullet" type="ColorRect" node_paths=PackedStringArray("arrow", "startPoint", "endPoint", "quickReloadArea")]
+custom_minimum_size = Vector2(100, 10)
+color = Color(0.764706, 0.686275, 0.32549, 1)
+script = ExtResource("1_bcsh3")
+arrow = NodePath("Arrow")
+startPoint = NodePath("Start")
+endPoint = NodePath("End")
+quickReloadArea = NodePath("quickReloadArea")
+
+[node name="Arrow" type="Sprite2D" parent="."]
+position = Vector2(1, 19)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_rohrf")
+
+[node name="Start" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="End" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 100.0
+offset_right = 140.0
+offset_bottom = 40.0
+
+[node name="quickReloadArea" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1, 10)
+layout_mode = 0
+offset_left = 75.0
+offset_right = 76.0
+offset_bottom = 10.0
+color = Color(0, 0.760784, 0.101961, 0.717647)

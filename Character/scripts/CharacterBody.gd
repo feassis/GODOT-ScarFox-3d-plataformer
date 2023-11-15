@@ -70,7 +70,9 @@ func PlayAnimation(state : AnimEnumState):
 			animation.play("1H_Ranged_Aiming")
 		
 		AnimEnumState.OneHandShoot:
+			animation.speed_scale = 5
 			animation.play("1H_Ranged_Shoot")
+			
 
 func animate(velocity: Vector3, gameMode: Player.GameState) -> void:
 	if isShooting:
@@ -82,27 +84,27 @@ func animate(velocity: Vector3, gameMode: Player.GameState) -> void:
 		Player.GameState.ShooterMode:
 			ShooterWalk(velocity)
 	
-func ShooterWalk(velocity: Vector3):
+func ShooterWalk(direction: Vector3):
 	
-	var goingz: bool = abs(velocity.x) < abs(velocity.z)
+	var goingz: bool = abs(direction.x) < abs(direction.z)
 		
 	if character.isDashing:
 		if goingz:
-			if velocity.z > 0:
+			if direction.z > 0:
 				PlayAnimation(AnimEnumState.DodgeFoward)
 			else:
 				PlayAnimation(AnimEnumState.DodgeBackward)
 		else:
-			if velocity.x >= 0:
+			if direction.x >= 0:
 				PlayAnimation(AnimEnumState.DodgeRight)
 			else:
 				PlayAnimation(AnimEnumState.DodgeLeft)
 		
 		return
 	
-	if velocity:		
+	if direction:		
 		if goingz:
-			if velocity.z >= 0:
+			if direction.z <= 0:
 				if character.is_walking():
 					PlayAnimation(AnimEnumState.Walk)
 				else:
@@ -110,7 +112,7 @@ func ShooterWalk(velocity: Vector3):
 			else:
 				PlayAnimation(AnimEnumState.WalkingBackwards)
 		else:
-			if velocity.x >= 0:
+			if direction.x >= 0:
 				PlayAnimation(AnimEnumState.StrafeRight)
 			else:
 				PlayAnimation(AnimEnumState.StrafeLeft)
@@ -142,3 +144,4 @@ func _on_animation_player_animation_finished(anim_name):
 	match anim_name:
 		"1H_Ranged_Shoot":
 			isShooting = false
+			animation.speed_scale = 1

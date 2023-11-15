@@ -8,7 +8,7 @@ class_name  Weapon
 @export var weaponIcon : CompressedTexture2D = null
 @export var ammoIcon : CompressedTexture2D = null
 @export var magazineSize = 1
-@export var reloadTime = 1
+@export var autoReloadTime = 1
 
 var weaponUI: WeaponDisplayUI 
 var reloadingTimer = 0
@@ -28,10 +28,22 @@ func GetWeaponCooldown() -> float:
 	
 func  _ready():
 	weaponUI = (Globals.gui as GUI).InstantiateWeaponDisplay(self)
+	ammo = magazineSize
+	
+func HasAmmo() -> bool:
+	return ammo > 0
 
 func _process(delta):
 	if cooldown > 0:
 		cooldown = clamp(cooldown - delta, 0, 100)
+		
+	if hasToReload and (Globals.character as Player).is_on_floor():
+		reloadingTimer -= delta
+		
+		if reloadingTimer <= 0:
+			weaponUI.InstantiateAllAmmo()
+			ammo = magazineSize
+			hasToReload = false
 
 func TryAttack(cameraRay: RayCast3D):
 	pass
@@ -50,3 +62,11 @@ func TryAttackMovementSkill():
 
 func AttackMovementSkill():
 	pass
+	
+func ConsumeAmmo():
+	ammo = clamp(ammo - 1, 0, magazineSize)
+	(weaponUI as WeaponDisplayUI).ConsumeAmmo()
+	
+	if ammo <=0:
+		hasToReload = true
+		reloadingTimer = autoReloadTime

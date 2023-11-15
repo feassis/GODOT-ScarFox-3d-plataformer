@@ -29,7 +29,7 @@ func Setup(weapon: Weapon):
 	weaponIcon.texture = myWeapon.weaponIcon
 	
 	InstantiateAllAmmo()
-	realodingProgresseBar.max_value = myWeapon.reloadTime
+	realodingProgresseBar.max_value = myWeapon.autoReloadTime
 	cooldownBar.max_value = myWeapon.GetWeaponCooldown()
 
 func InstantiateAllAmmo():

@@ -32,6 +32,7 @@ class_name Player
 
 @export_category("Objects")
 @export var activeWeapon: Node3D = null
+@export var offhandWeapon: Node3D = null
 @export var body: Body = null
 @export var springArmOffset: Node3D = null
 
@@ -83,6 +84,7 @@ func _physics_process(delta):
 	Move(direction, delta)
 	
 	HandleAttackLogic()
+	HandleReloadLogic()
 
 	move_and_slide()
 	
@@ -93,6 +95,10 @@ func _physics_process(delta):
 			body.animate(direction, gameplayMode)
 	else:
 		body.PlayAnimation(Body.AnimEnumState.Falling)
+
+func HandleReloadLogic():
+	if Input.is_action_just_pressed("reload"):
+		(offhandWeapon as OffHandWeapon).GoToReloadingState()
 
 func Move(direction: Vector3, delta: float) -> void:
 	if isDashing:
@@ -114,7 +120,10 @@ func HandleDashLogic(delta:float, direction: Vector3):
 		if dashingTimer <= 0:
 			isDashing = false
 			dashingTimer = 0
-			#velocity = Vector3.ZERO
+			if gameplayMode == GameState.ShooterMode:
+				velocity = Vector3.ZERO
+			
+		
 	
 	
 	if gameplayMode == GameState.PlatformMode:
@@ -126,15 +135,7 @@ func HandleDashLogic(delta:float, direction: Vector3):
 	direction = direction.rotated(Vector3.UP, shooterSpringArm.rotation.y)
 	
 	if CanDash() and Input.is_action_just_pressed("dodge"):
-		isDashing = true
-		dashingTimer = dashDuration
-		
-		var goingz: bool = abs(direction.x) < abs(direction.z)
-		
-		if goingz:
-			velocity = Vector3(0,0,direction.z).normalized()*dashVelocity
-		else: 
-			velocity = Vector3(direction.x,0,0).normalized()*dashVelocity
+		(offhandWeapon as OffHandWeapon).TryToMovementAttack(direction)
 
 func ForceDash(dashForce: Vector3, dashTime: float):
 	isDashing = true
