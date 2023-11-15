@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b2yfo5g0220ne"]
 
 [ext_resource type="Script" path="res://Revolver.gd" id="1_ibbq7"]
-[ext_resource type="PackedScene" uid="uid://7kyk2xb17imt" path="res://Combat/Weapons/UI/weapon_ui.tscn" id="2_3fomt"]
+[ext_resource type="PackedScene" uid="uid://ck8bm3cuujr0l" path="res://Combat/Projectile/bullet.tscn" id="2_siwpw"]
 [ext_resource type="Texture2D" uid="uid://brsi5315ox5dt" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/candy_01a.png" id="3_sfosy"]
 [ext_resource type="Texture2D" uid="uid://1uicxw365o17" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/pearl_01a.png" id="4_tggtn"]
 
@@ -48,11 +48,11 @@ script = ExtResource("1_ibbq7")
 dashVelocity = 50.0
 dashDuration = 0.2
 projectileSpawnPosition = NodePath("DesertEagle/ProjectileSpawnPoint")
-projectilePrefab = ExtResource("2_3fomt")
+projectilePrefab = ExtResource("2_siwpw")
 weaponIcon = ExtResource("3_sfosy")
 ammoIcon = ExtResource("4_tggtn")
 magazineSize = 6
-autoReloadTime = 6
+autoReloadTime = 18
 
 [node name="DesertEagle" type="Node3D" parent="."]
 
@@ -65,4 +65,4 @@ mesh = SubResource("ArrayMesh_3voft")
 skeleton = NodePath("")
 
 [node name="ProjectileSpawnPoint" type="Node3D" parent="DesertEagle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15363, 2.11166, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.178782, 0)

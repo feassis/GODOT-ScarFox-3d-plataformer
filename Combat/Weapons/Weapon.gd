@@ -62,3 +62,11 @@ func TryAttackMovementSkill():
 
 func AttackMovementSkill():
 	pass
+	
+func ConsumeAmmo():
+	ammo = clamp(ammo - 1, 0, magazineSize)
+	(weaponUI as WeaponDisplayUI).ConsumeAmmo()
+	
+	if ammo <=0:
+		hasToReload = true
+		reloadingTimer = autoReloadTime

@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck8bm3cuujr0l"]
+
+[ext_resource type="Script" path="res://Combat/Projectile/Projectile.gd" id="1_k5ane"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_x2vrs"]
+radius = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_sk7qp"]
+radius = 0.1
+height = 0.2
+
+[node name="Bullet" type="Area3D"]
+script = ExtResource("1_k5ane")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_x2vrs")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+layers = 524289
+mesh = SubResource("SphereMesh_sk7qp")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered" flags=18]

@@ -84,6 +84,7 @@ func _physics_process(delta):
 	Move(direction, delta)
 	
 	HandleAttackLogic()
+	HandleReloadLogic()
 
 	move_and_slide()
 	
@@ -94,6 +95,10 @@ func _physics_process(delta):
 			body.animate(direction, gameplayMode)
 	else:
 		body.PlayAnimation(Body.AnimEnumState.Falling)
+
+func HandleReloadLogic():
+	if Input.is_action_just_pressed("reload"):
+		(offhandWeapon as OffHandWeapon).GoToReloadingState()
 
 func Move(direction: Vector3, delta: float) -> void:
 	if isDashing:

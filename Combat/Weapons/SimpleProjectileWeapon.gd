@@ -39,15 +39,6 @@ func Attack(cameraRay: RayCast3D):
 	get_tree().get_root().add_child(projectile)
 	ConsumeAmmo();
 
-	
-func ConsumeAmmo():
-	ammo = clamp(ammo - 1, 0, magazineSize)
-	(weaponUI as WeaponDisplayUI).ConsumeAmmo()
-	
-	if ammo <=0:
-		hasToReload = true
-		reloadingTimer = autoReloadTime
-
 func SpawnProjectile() -> Node:
 	var projectile = projectilePrefab.instantiate()
 	(projectile as Projectile).damage = damage
