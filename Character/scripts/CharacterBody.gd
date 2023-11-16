@@ -22,6 +22,11 @@ func apply_rotation_custom_velocity(velocity: Vector3, customVelocity:float) -> 
 		rotation.y,  angularVelocity, customVelocity
 	)
 
+func PlayFallAnim():
+	if isShooting:
+		return
+	PlayAnimation(AnimEnumState.Falling)
+
 func PlayAnimation(state : AnimEnumState):
 	match state:
 		AnimEnumState.Idle:

@@ -94,7 +94,7 @@ func _physics_process(delta):
 		elif gameplayMode == GameState.ShooterMode:
 			body.animate(direction, gameplayMode)
 	else:
-		body.PlayAnimation(Body.AnimEnumState.Falling)
+		body.PlayFallAnim()
 
 func HandleReloadLogic():
 	if Input.is_action_just_pressed("reload"):
@@ -134,7 +134,7 @@ func HandleDashLogic(delta:float, direction: Vector3):
 	
 	direction = direction.rotated(Vector3.UP, shooterSpringArm.rotation.y)
 	
-	if CanDash() and Input.is_action_just_pressed("dodge"):
+	if CanDash() and Input.is_action_just_pressed("dodge") and is_on_floor():
 		(offhandWeapon as OffHandWeapon).TryToMovementAttack(direction)
 
 func ForceDash(dashForce: Vector3, dashTime: float):
