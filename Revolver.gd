@@ -36,7 +36,8 @@ func ManualReloadProcess(delta: float):
 		if timerPerBulletReload >= perfectReloadTime - perfectReloadLimitTime and timerPerBulletReload <= perfectReloadTime + perfectReloadLimitTime:
 			Reload()
 		else:
-			timerPerBulletReload =0
+			timerPerBulletReload = 0
+			(weaponUI as RevolverUI).OnReloadFail()
 		return
 		
 	
@@ -69,13 +70,11 @@ func GoToReloadingState():
 func Reload():
 	ammo = clamp(ammo + 1, 0, magazineSize)
 	timerPerBulletReload = 0
+	(weaponUI as RevolverUI).OnReload()
 	
 	if ammo >= magazineSize:
 		weaponState = RevolverState.StandardUse
 		hasToReload = false
-		
-	(weaponUI as RevolverUI).OnReload()
-	
 
 func GetBulletAmountToReload() -> int:
 	return magazineSize - ammo
