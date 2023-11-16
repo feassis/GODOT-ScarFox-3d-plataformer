@@ -19,10 +19,12 @@ func _process(delta):
 	realodingProgresseBar.value = myWeapon.reloadingTimer
 	cooldownBar.value = myWeapon.cooldown
 	
-	if realodingProgresseBar.value > 0:
+	if myWeapon.hasToReload:
 		reloadingLabel.show()
+		realodingProgresseBar.show()
 	else:
 		reloadingLabel.hide()
+		realodingProgresseBar.hide()
 
 func Setup(weapon: Weapon):
 	myWeapon = weapon

@@ -13,6 +13,7 @@ var reloadBulletUIs: Array = []
 func _process(delta):
 	if (myWeapon as Revolver).weaponState == Revolver.RevolverState.ManualReload:
 		activeReloadContainer.show()
+		realodingProgresseBar.hide()
 		
 		var bulletsToReload = (myWeapon as Revolver).GetBulletAmountToReload()
 		
@@ -49,11 +50,17 @@ func RemoveTopBulletUI():
 	if bulletUI == null:
 		return
 	
-	(bulletUI as ReloadBulletUI).queue_free()
+	(bulletUI as ReloadBulletUI).Animate(ReloadBulletUI.AnimationNames.Success)
 	InstantiateAmmo()
 
 func OnReload():
 	RemoveTopBulletUI()
+	
+func OnReloadFail():
+	if reloadBulletUIs.size() <= 0:
+		return
+	
+	( reloadBulletUIs[0] as ReloadBulletUI).Animate(ReloadBulletUI.AnimationNames.Fail)
 	
 func InstantiateAmmo():
 	var ammoInstance = ammoPrefab.instantiate()
