@@ -21,6 +21,9 @@ class_name Player
 @export var dashVelocity: float = 20
 @export var dashDuration: float = 0.5
 
+@export_category("Setup -> Movement -> Reloading")
+@export var reloadingNormalSpeed: float = 1.0
+
 @export_category("Combat")
 @export var health: Node3D
 
@@ -93,6 +96,8 @@ func _physics_process(delta):
 			body.animate(velocity, gameplayMode)
 		elif gameplayMode == GameState.ShooterMode:
 			body.animate(direction, gameplayMode)
+		elif  gameplayMode == GameState.ReloadingMode:
+			body.animate(velocity, gameplayMode)
 	else:
 		body.PlayFallAnim()
 
@@ -112,6 +117,9 @@ func Move(direction: Vector3, delta: float) -> void:
 		
 		GameState.ShooterMode:
 			MoveOnShooterMode(direction, delta)
+		
+		GameState.ReloadingMode:
+			MoveOnReloadingMode(direction, delta)
 			
 func HandleDashLogic(delta:float, direction: Vector3):
 	if isDashing:
@@ -122,10 +130,7 @@ func HandleDashLogic(delta:float, direction: Vector3):
 			dashingTimer = 0
 			if gameplayMode == GameState.ShooterMode:
 				velocity = Vector3.ZERO
-			
-		
-	
-	
+
 	if gameplayMode == GameState.PlatformMode:
 		return
 	
@@ -143,6 +148,7 @@ func ForceDash(dashForce: Vector3, dashTime: float):
 	velocity = dashForce
 
 func HandleGameModeState():
+	
 	if Input.is_action_just_pressed("aim"):
 		gameStateRequestedLast = GameState.ShooterMode
 	
@@ -204,6 +210,9 @@ func SetMoveSpeed() -> void:
 				_currentSpeed = shooterSprintSpeed
 			else:
 				_currentSpeed = shooterNormalSpeed
+		GameState.ReloadingMode:
+			_currentSpeed = reloadingNormalSpeed
+		
 
 func ChangeGameplayState(desiredState: GameState):
 	gameplayMode = desiredState
@@ -217,7 +226,7 @@ func ChangeGameplayState(desiredState: GameState):
 			CameraTransition(platformSpringArm, shooterSpringArm, cameraTransitionDuration)
 			
 func CanChangeState() -> bool:
-	return not cameraIsTransitioning and not isDashing
+	return not cameraIsTransitioning and not isDashing and not gameplayMode == GameState.ReloadingMode
 
 func MoveOnShooterMode(direction: Vector3, delta: float):
 	if direction:
@@ -238,6 +247,17 @@ func MoveOnPlatformMode(direction: Vector3, delta: float):
 		else:
 			velocity.x = clamp(velocity.x +  direction.x * onJumpStartSpeed * onAirDamping* delta, -onJumpStartSpeed, onJumpStartSpeed)
 			velocity.z = clamp(velocity.z +  direction.z * onJumpStartSpeed * onAirDamping* delta, -onJumpStartSpeed, onJumpStartSpeed)
+		body.apply_rotation(velocity.normalized())
+	else:
+		if is_on_floor():
+			velocity.x = move_toward(velocity.x, 0,deacelerationOnFloor * delta)
+			velocity.z = move_toward(velocity.z, 0, deacelerationOnFloor * delta)
+			
+func MoveOnReloadingMode(direction: Vector3, delta: float):
+	if direction:
+		if is_on_floor():
+			velocity.x = direction.x * _currentSpeed
+			velocity.z = direction.z * _currentSpeed
 		body.apply_rotation(velocity.normalized())
 	else:
 		if is_on_floor():
@@ -320,4 +340,4 @@ func OnDeath():
 func OnHeal():
 	(Globals.playerHealthBar as PlayerHealthBar).UpdateHP((health as Health).currentHP)
 
-enum GameState {PlatformMode, ShooterMode}
+enum GameState {PlatformMode, ShooterMode, ReloadingMode}

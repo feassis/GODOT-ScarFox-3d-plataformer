@@ -3,25 +3,6 @@
 [ext_resource type="Script" path="res://Combat/Weapons/UI/ReloadBullet.gd" id="1_bcsh3"]
 [ext_resource type="Texture2D" uid="uid://bns4xv5mfxrxl" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/candle_01a.png" id="2_rohrf"]
 
-[sub_resource type="Animation" id="Animation_664nq"]
-resource_name = "idle"
-
-[sub_resource type="Animation" id="Animation_ff2d8"]
-resource_name = "fail"
-length = 0.7
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(0.764706, 0, 0, 1), Color(0.764706, 0.686275, 0.32549, 1), Color(0.764706, 0.686275, 0.32549, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_8ggcl"]
 length = 0.001
 tracks/0/type = "value"
@@ -48,6 +29,25 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(0, 0.760784, 0.101961, 0.717647)]
 }
+
+[sub_resource type="Animation" id="Animation_ff2d8"]
+resource_name = "fail"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.764706, 0, 0, 1), Color(0.764706, 0.686275, 0.32549, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_664nq"]
+resource_name = "idle"
 
 [sub_resource type="Animation" id="Animation_f2f6w"]
 resource_name = "success"

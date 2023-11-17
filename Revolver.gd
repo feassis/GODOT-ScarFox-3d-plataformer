@@ -15,6 +15,7 @@ class_name Revolver
 
 var weaponState: RevolverState = RevolverState.StandardUse
 var timerPerBulletReload: float = 0
+var playerStateBeforeReload: Player.GameState;
 
 enum RevolverState {StandardUse, ManualReload}
 
@@ -65,6 +66,8 @@ func MovementAttack(inputDirection: Vector3):
 
 func GoToReloadingState():
 	weaponState = RevolverState.ManualReload
+	playerStateBeforeReload = (Globals.character as Player).gameplayMode
+	(Globals.character as Player).ChangeGameplayState(Player.GameState.ReloadingMode)
 	
 	
 func Reload():
@@ -75,6 +78,7 @@ func Reload():
 	if ammo >= magazineSize:
 		weaponState = RevolverState.StandardUse
 		hasToReload = false
+		(Globals.character as Player).ChangeGameplayState((Player.GameState.PlatformMode))
 
 func GetBulletAmountToReload() -> int:
 	return magazineSize - ammo

@@ -88,6 +88,8 @@ func animate(velocity: Vector3, gameMode: Player.GameState) -> void:
 			PlatformWalk(velocity)
 		Player.GameState.ShooterMode:
 			ShooterWalk(velocity)
+		Player.GameState.ReloadingMode:
+			ReloadWalk(velocity)
 	
 func ShooterWalk(direction: Vector3):
 	
@@ -127,6 +129,16 @@ func ShooterWalk(direction: Vector3):
 	PlayAnimation(AnimEnumState.Idle)
 	
 func PlatformWalk(velocity: Vector3):
+	if velocity:
+		if character.is_walking():
+			PlayAnimation(AnimEnumState.Walk)
+			return
+		PlayAnimation(AnimEnumState.Run)
+		
+		return
+	PlayAnimation(AnimEnumState.Idle)
+	
+func ReloadWalk(velocity: Vector3):
 	if velocity:
 		if character.is_walking():
 			PlayAnimation(AnimEnumState.Walk)
