@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://vbcptwjukiex"]
+
+[ext_resource type="Script" path="res://Plataform Obstacles/BaseFallingPlatform.gd" id="1_ula12"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ofogv"]
+size = Vector3(3.93248, 0.170745, 3.93409)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y4juw"]
+size = Vector3(3.98477, 0.3033, 3.97955)
+
+[node name="BaseFallingPlatform" type="Node3D" node_paths=PackedStringArray("platform", "animation")]
+script = ExtResource("1_ula12")
+platform = NodePath("PlatformParent")
+respawn = true
+animation = NodePath("PlatformParent/AnimationPlayer")
+
+[node name="PlatformParent" type="RigidBody3D" parent="."]
+collision_mask = 15
+gravity_scale = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformParent"]
+shape = SubResource("BoxShape3D_ofogv")
+
+[node name="Area3D" type="Area3D" parent="PlatformParent"]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformParent/Area3D"]
+shape = SubResource("BoxShape3D_y4juw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlatformParent"]
+
+[connection signal="body_entered" from="PlatformParent/Area3D" to="." method="_on_area_3d_body_entered"]

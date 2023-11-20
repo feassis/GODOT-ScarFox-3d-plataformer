@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://xxdn0e0333la"]
+[gd_scene load_steps=13 format=3 uid="uid://xxdn0e0333la"]
 
 [ext_resource type="PackedScene" uid="uid://dgv8rdhc1pmqb" path="res://Grids/GridMaps/proto_type_floor_grid_map.tscn" id="1_hskch"]
 [ext_resource type="PackedScene" uid="uid://b20okidvm1vct" path="res://Character/Scenes/player.tscn" id="2_36j0l"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bxobxm1n7emnc" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
 [ext_resource type="PackedScene" uid="uid://bi3fc1tl4boxu" path="res://UI/gui.tscn" id="6_falde"]
 [ext_resource type="PackedScene" uid="uid://cqupgd4lnmhik" path="res://Enemies/shooting_enemy.tscn" id="7_uhme4"]
+[ext_resource type="PackedScene" uid="uid://cq10q57hbwnts" path="res://Plataform Obstacles/Scene/FallingPlatform.tscn" id="8_h3lc8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mrj58"]
 
@@ -80,6 +81,9 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0442008, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47222, 20.1743)
 rotationVelocity = 1.0
 yOffset = 3.0
+
+[node name="FallingPlatform" parent="." instance=ExtResource("8_h3lc8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6672, 4.85785, 0)
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]
