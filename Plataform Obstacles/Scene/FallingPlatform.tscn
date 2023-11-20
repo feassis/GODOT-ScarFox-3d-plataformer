@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://cq10q57hbwnts"]
+
+[ext_resource type="PackedScene" uid="uid://vbcptwjukiex" path="res://Plataform Obstacles/Scene/base_falling_platform.tscn" id="1_fac0g"]
+[ext_resource type="ArrayMesh" uid="uid://ct153mhy3ljfl" path="res://addons/kaykit_dungeon_remastered/Assets/obj/floor_wood_large_dark.obj" id="2_h5uj1"]
+
+[sub_resource type="Animation" id="Animation_hjgtv"]
+resource_name = "idle"
+
+[sub_resource type="Animation" id="Animation_mnbla"]
+resource_name = "breaking"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FloorWoodLargeDark:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.0174533), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FloorWoodLargeDark2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-3.14159, 0, 0), Vector3(-3.14159, 0, 0.0174533), Vector3(-3.14159, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1fgx3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FloorWoodLargeDark:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FloorWoodLargeDark2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-3.14159, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6rnya"]
+_data = {
+"RESET": SubResource("Animation_1fgx3"),
+"breaking": SubResource("Animation_mnbla"),
+"idle": SubResource("Animation_hjgtv")
+}
+
+[node name="FallingPlatform" instance=ExtResource("1_fac0g")]
+
+[node name="FloorWoodLargeDark" type="MeshInstance3D" parent="PlatformParent" index="1"]
+mesh = ExtResource("2_h5uj1")
+skeleton = NodePath("../..")
+
+[node name="FloorWoodLargeDark2" type="MeshInstance3D" parent="PlatformParent" index="2"]
+transform = Transform3D(1, 0, 0, 0, -1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0)
+mesh = ExtResource("2_h5uj1")
+skeleton = NodePath("../..")
+
+[node name="FloorWoodLargeDark2" type="MeshInstance3D" parent="PlatformParent/FloorWoodLargeDark2" index="0"]
+transform = Transform3D(0.999848, -0.0174524, 0, -0.0174524, -0.999848, -8.74228e-08, 1.52574e-09, 8.74095e-08, -1, 0, 0, 0)
+mesh = ExtResource("2_h5uj1")
+skeleton = NodePath("../..")
+
+[node name="AnimationPlayer" parent="PlatformParent" index="4"]
+libraries = {
+"": SubResource("AnimationLibrary_6rnya")
+}
