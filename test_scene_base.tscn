@@ -1,13 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://xxdn0e0333la"]
+[gd_scene load_steps=16 format=3 uid="uid://xxdn0e0333la"]
 
 [ext_resource type="PackedScene" uid="uid://dgv8rdhc1pmqb" path="res://Grids/GridMaps/proto_type_floor_grid_map.tscn" id="1_hskch"]
 [ext_resource type="PackedScene" uid="uid://b20okidvm1vct" path="res://Character/Scenes/player.tscn" id="2_36j0l"]
 [ext_resource type="PackedScene" uid="uid://bh2xcqq1yfr2c" path="res://box_a.tscn" id="3_ivgn8"]
 [ext_resource type="Script" path="res://Plataform Obstacles/DeathPlane.gd" id="4_cqxpn"]
+[ext_resource type="ArrayMesh" uid="uid://biyihk1vigvie" path="res://addons/kaykit_prototype_bits/Assets/obj/Box_A.obj" id="4_koiws"]
 [ext_resource type="PackedScene" uid="uid://bxobxm1n7emnc" path="res://Plataform Obstacles/Scene/moving_platform_linear.tscn" id="5_x3k8v"]
 [ext_resource type="PackedScene" uid="uid://bi3fc1tl4boxu" path="res://UI/gui.tscn" id="6_falde"]
 [ext_resource type="PackedScene" uid="uid://cqupgd4lnmhik" path="res://Enemies/shooting_enemy.tscn" id="7_uhme4"]
 [ext_resource type="PackedScene" uid="uid://cq10q57hbwnts" path="res://Plataform Obstacles/Scene/FallingPlatform.tscn" id="8_h3lc8"]
+[ext_resource type="PackedScene" uid="uid://d1l4jotm0v3d2" path="res://Plataform Obstacles/Scene/bounce_platform.tscn" id="9_3glnv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mrj58"]
 
@@ -17,6 +19,9 @@ sky_material = SubResource("ProceduralSkyMaterial_mrj58")
 [sub_resource type="Environment" id="Environment_45nc5"]
 background_mode = 2
 sky = SubResource("Sky_o3dqe")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5rjo6"]
+size = Vector3(0.535648, 0.402891, 0.50671)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xru63"]
 size = Vector3(216.524, 4.29113, 215.85)
@@ -58,6 +63,16 @@ shadow_enabled = true
 [node name="BoxA" parent="." instance=ExtResource("3_ivgn8")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 10.8063, 1.51995, 15.871)
 
+[node name="BoxA2" type="MeshInstance3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 3.18252, -0.213665, -6.98649)
+mesh = ExtResource("4_koiws")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="BoxA2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxA2/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00174236, 0.205612, 0.000577927)
+shape = SubResource("BoxShape3D_5rjo6")
+
 [node name="DeathPlane" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.75161, 0)
 collision_mask = 3
@@ -84,6 +99,9 @@ yOffset = 3.0
 
 [node name="FallingPlatform" parent="." instance=ExtResource("8_h3lc8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6672, 4.85785, 0)
+
+[node name="BoncePlatform" parent="." instance=ExtResource("9_3glnv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05538, 0.942201, -6.65477)
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]

@@ -53,9 +53,13 @@ var cameraTween
 var gameplayMode: GameState = GameState.PlatformMode
 var jumped: bool = false
 var gameStateRequestedLast:GameState = GameState.PlatformMode
+var preMovementVelocity: Vector3
 
 var isDashing: bool = false
 var dashingTimer:float = 0
+
+var bounceJumpInterval: float
+var bounceJumpPressedInterval: float
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -88,7 +92,8 @@ func _physics_process(delta):
 	
 	HandleAttackLogic()
 	HandleReloadLogic()
-
+	
+	preMovementVelocity = velocity
 	move_and_slide()
 	
 	if is_on_floor():
@@ -102,6 +107,8 @@ func _physics_process(delta):
 		body.PlayFallAnim()
 
 func HandleReloadLogic():
+	if gameplayMode == GameState.BounceStart:
+		return
 	if Input.is_action_just_pressed("reload"):
 		(offhandWeapon as OffHandWeapon).GoToReloadingState()
 
@@ -120,6 +127,9 @@ func Move(direction: Vector3, delta: float) -> void:
 		
 		GameState.ReloadingMode:
 			MoveOnReloadingMode(direction, delta)
+		
+		GameState.BounceStart:
+			velocity = Vector3(0, velocity.y, 0)
 			
 func HandleDashLogic(delta:float, direction: Vector3):
 	if isDashing:
@@ -131,7 +141,7 @@ func HandleDashLogic(delta:float, direction: Vector3):
 			if gameplayMode == GameState.ShooterMode:
 				velocity = Vector3.ZERO
 
-	if gameplayMode == GameState.PlatformMode:
+	if gameplayMode != GameState.ShooterMode:
 		return
 	
 	if direction == Vector3.ZERO:
@@ -148,7 +158,8 @@ func ForceDash(dashForce: Vector3, dashTime: float):
 	velocity = dashForce
 
 func HandleGameModeState():
-	
+	if gameplayMode == GameState.BounceStart:
+		return
 	if Input.is_action_just_pressed("aim"):
 		gameStateRequestedLast = GameState.ShooterMode
 	
@@ -177,9 +188,19 @@ func Attack():
 	(activeWeapon as Weapon).TryAttack(shooterSpringArm.ray)
 
 func HandleJumpLogic(delta:float):
-	if gameplayMode == GameState.ShooterMode:
-		return 
+	match gameplayMode:
+		GameState.ShooterMode:
+			return
+		GameState.PlatformMode:
+			PlatformJumpMode(delta)
+		GameState.BounceStart:
+			bounceJumpInterval += delta
+		
+			if Input.is_action_pressed("jump"):
+				bounceJumpPressedInterval += delta
 	
+
+func PlatformJumpMode(delta: float):
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump"):
 		if CanJump():
@@ -213,6 +234,19 @@ func SetMoveSpeed() -> void:
 		GameState.ReloadingMode:
 			_currentSpeed = reloadingNormalSpeed
 		
+
+func GoToBounceStart():
+	if gameplayMode == GameState.BounceStart:
+		return
+	bounceJumpInterval = 0
+	bounceJumpPressedInterval = 0
+	ChangeGameplayState(GameState.BounceStart)
+	body.PlayAnimation(Body.AnimEnumState.Idle)
+	
+func BounceJump(carriedVelocity: Vector3, bounceForce: Vector3):
+	gameplayMode = GameState.PlatformMode
+	velocity = carriedVelocity + bounceForce * (bounceJumpPressedInterval / (bounceJumpInterval + 0.00001))
+	print(velocity)
 
 func ChangeGameplayState(desiredState: GameState):
 	gameplayMode = desiredState
@@ -340,4 +374,4 @@ func OnDeath():
 func OnHeal():
 	(Globals.playerHealthBar as PlayerHealthBar).UpdateHP((health as Health).currentHP)
 
-enum GameState {PlatformMode, ShooterMode, ReloadingMode}
+enum GameState {PlatformMode, ShooterMode, ReloadingMode, BounceStart}

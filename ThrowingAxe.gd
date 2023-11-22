@@ -34,7 +34,6 @@ func _on_body_entered(body):
 
 func _on_area_3d_body_entered(body):
 	if desiredTarget == DesiredTarget.Player:
-		print(body.name)
 		if body is Player:
 			if isActive:
 				(body as Player).TakeDamage(damage)
