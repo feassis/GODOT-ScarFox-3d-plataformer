@@ -246,7 +246,6 @@ func GoToBounceStart():
 func BounceJump(carriedVelocity: Vector3, bounceForce: Vector3):
 	gameplayMode = GameState.PlatformMode
 	velocity = carriedVelocity + bounceForce * (bounceJumpPressedInterval / (bounceJumpInterval + 0.00001))
-	print(velocity)
 
 func ChangeGameplayState(desiredState: GameState):
 	gameplayMode = desiredState

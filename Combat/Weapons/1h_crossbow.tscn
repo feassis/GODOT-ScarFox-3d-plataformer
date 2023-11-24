@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://d2se2ion1xmr6"]
+[gd_scene load_steps=10 format=3 uid="uid://d2se2ion1xmr6"]
 
 [ext_resource type="Texture2D" uid="uid://cnocv8o1ow01c" path="res://addons/kaykit_character_pack_adventures/Characters/gltf/Rogue_rogue_texture.png" id="1_mxqvp"]
 [ext_resource type="Script" path="res://Combat/Weapons/SimpleProjectileWeapon.gd" id="1_yt8to"]
 [ext_resource type="PackedScene" uid="uid://dt1jyr4hnqunw" path="res://Combat/Projectile/arrow.tscn" id="2_ra2pe"]
 [ext_resource type="Texture2D" uid="uid://dm33geno55t02" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/bow_01b.png" id="3_8iyqn"]
+[ext_resource type="PackedScene" uid="uid://pcuav32qb8qi" path="res://debug_gren.tscn" id="3_fx8my"]
 [ext_resource type="Texture2D" uid="uid://bdo15h3qk2adl" path="res://addons/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/48x48/arrow_01e.png" id="4_7o53u"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dn2of"]
@@ -52,6 +53,7 @@ bone_idx = 15
 script = ExtResource("1_yt8to")
 projectileSpawnPosition = NodePath("ArrowSpawnPosition")
 projectilePrefab = ExtResource("2_ra2pe")
+debugSphre = ExtResource("3_fx8my")
 weaponIcon = ExtResource("3_8iyqn")
 ammoIcon = ExtResource("4_7o53u")
 magazineSize = 3

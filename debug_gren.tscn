@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://pcuav32qb8qi"]
+
+[ext_resource type="Material" uid="uid://u4jk7ipyaqmg" path="res://material/green.tres" id="1_3mp50"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_rq7na"]
+radius = 0.1
+height = 0.2
+
+[node name="Debug Gren" type="MeshInstance3D"]
+material_override = ExtResource("1_3mp50")
+mesh = SubResource("SphereMesh_rq7na")

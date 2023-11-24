@@ -102,6 +102,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6672, 4.85785, 0)
 
 [node name="BoncePlatform" parent="." instance=ExtResource("9_3glnv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05538, 0.942201, -6.65477)
+bounceForce = 35.0
 
 [connection signal="area_entered" from="DeathPlane" to="DeathPlane" method="_on_area_entered" flags=18]
 [connection signal="body_entered" from="DeathPlane" to="Player" method="_on_death_plane_body_entered"]
