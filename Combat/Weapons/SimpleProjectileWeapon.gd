@@ -11,6 +11,9 @@ extends Weapon
 @export var cameraOffset:Vector3 = Vector3.ZERO
 @export var damage:float = 2
 
+@export_category("Debug")
+@export var debug: bool
+@export var debugSphre : PackedScene
 
 func CanShoot():
 	return HasAmmo() and not IsOnCooldown()
@@ -29,12 +32,22 @@ func Attack(cameraRay: RayCast3D):
 	Globals.crosshair.PlayShootAnim()
 	var projectile = SpawnProjectile()
 	var collisionPoint: Vector3
-	if cameraRay.is_colliding() && ((collisionPoint - cameraRay.global_transform.origin).length() > 10):
-		collisionPoint = cameraRay.get_collision_point() + cameraOffset
+	print("is colliding: " + str(cameraRay.is_colliding()) + " distance: " + str(collisionPoint.distance_to(cameraRay.global_transform.origin)) )
+	if cameraRay.is_colliding() && ((collisionPoint.distance_to(cameraRay.global_transform.origin)) > 2):
+		collisionPoint = cameraRay.get_collision_point()
+		print("Collided")
 	else:
 		collisionPoint = cameraRay.global_position + (cameraRay.global_transform.basis.z).normalized() * -15 + cameraOffset
-	projectileSpawnPosition.look_at_from_position(projectileSpawnPosition.global_position, collisionPoint, Vector3.UP, true)
+		print("Did not collide")
+		
+	if debug:
+		var instance = debugSphre.instantiate()
+		instance.global_position = collisionPoint
+		get_tree().get_root().add_child(instance)
+	
+	projectileSpawnPosition.look_at(collisionPoint)
 	projectile.global_transform = projectileSpawnPosition.global_transform
+	(projectile as Projectile).targetPosition = collisionPoint
 		
 	get_tree().get_root().add_child(projectile)
 	ConsumeAmmo();

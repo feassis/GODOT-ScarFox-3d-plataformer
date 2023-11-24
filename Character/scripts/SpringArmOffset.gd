@@ -12,6 +12,7 @@ class_name CharacterSpringArm
 @export var camera: Camera3D = null
 @export var ray: RayCast3D = null
 @export var debugSphere: Node3D = null
+@export var debugSphereGreen: Node3D = null
 
 func  _unhandled_input(event) -> void:
 	if event is InputEventMouseMotion:
@@ -29,14 +30,20 @@ func GetSpringArm() -> SpringArm3D:
 func _ready():
 	if debugOn:
 		debugSphere.show()
+		debugSphereGreen.show()
 	else: 
 		debugSphere.hide()
+		debugSphereGreen.hide()
 
 func _process(delta):
 	if not debugOn:
 		return
 	
 	if ray.is_colliding():
-		debugSphere.global_position = ray.get_collision_point()
+		debugSphere.hide()
+		debugSphereGreen.show()
+		debugSphereGreen.global_position = ray.get_collision_point()
 	else:
+		debugSphere.show()
+		debugSphereGreen.hide()
 		debugSphere.global_position = ray.global_position + (ray.global_transform.basis.z).normalized() * -15

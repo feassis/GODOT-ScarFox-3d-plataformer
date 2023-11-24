@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dt1jyr4hnqunw"]
+[gd_scene load_steps=8 format=3 uid="uid://dt1jyr4hnqunw"]
 
 [ext_resource type="Script" path="res://Combat/Projectile/Projectile.gd" id="1_pnjq8"]
 [ext_resource type="Texture2D" uid="uid://lda4bdvwap5n" path="res://addons/kaykit_character_pack_adventures/Assets/gltf/rogue_texture.png" id="1_s8bt1"]
+[ext_resource type="PackedScene" uid="uid://cexy8fcae67qj" path="res://debugSphereRed.tscn" id="2_tncc3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m4gxc"]
 resource_name = "rogue_texture"
@@ -47,6 +48,7 @@ size = Vector3(0.0368648, 0.0384291, 0.761953)
 
 [node name="Arrow" type="Area3D"]
 script = ExtResource("1_pnjq8")
+debugSphere = ExtResource("2_tncc3")
 
 [node name="arrow" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
